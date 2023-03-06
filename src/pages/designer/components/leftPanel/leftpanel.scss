@@ -3,3 +3,29 @@
     background: #333;
   }
 }
+
+.svg-tool-button {
+  vertical-align: middle;
+  display: inline-table;
+  /* display: inline-block; */
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  margin: 2px 2px 2px 2px;
+  background-color: var(--toolboxButton);
+  /* padding-top: 5px; */
+}
+
+.svg-tool-button span {
+  display: block;
+  margin: auto;
+}
+
+.svg-tool-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.svg-tool-active, .svg-tool-active:active, .svg-tool-active:hover {
+  background-color: rgba(48,89,175,1);
+}

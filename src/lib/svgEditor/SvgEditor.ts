@@ -20,10 +20,10 @@ export class SvgEditor extends SvgEditorStartup {
   loadFromURL(url: any) {
     throw new Error('Method not implemented.')
   }
-  svgCanvas: SvgCanvas
+  declare svgCanvas: SvgCanvas
   langChanged: boolean
   showSaveWarning: boolean
-  storagePromptState: string
+  declare storagePromptState: string
   title: string
   $click: any
   isReady: boolean
@@ -328,7 +328,6 @@ export class SvgEditor extends SvgEditorStartup {
       this.callbacks.push([cb, resolve, reject])
     })
   }
-
   rotateSelected(arg0: number, arg1: number) {
     throw new Error('Method not implemented.')
   }
@@ -594,5 +593,13 @@ export class SvgEditor extends SvgEditorStartup {
     e.stopPropagation()
     e.preventDefault()
     // hypothetical indicator should be removed here
+  }
+
+  // ******************对外
+  setMode(mode: string) {
+    this.svgCanvas.setMode(mode);
+  }
+  clickToSetMode(mode: string) {
+    this.svgCanvas.setMode(mode);
   }
 }

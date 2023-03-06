@@ -1,8 +1,8 @@
 
 export class BaseEditorStartup {
-  setMode(mode: string) {}
-  clickToSetMode(mode: string) {}
+  setMode(mode: string) {console.warn('Method not implemented.')}
+  clickToSetMode(mode: string) {console.warn('Method not implemented.')}
   init() {}
-  clearSelection() {}
-  setConfig(config: any) {}
+  clearSelection() {console.warn('Method not implemented.')}
+  setConfig(config: any) {console.warn('Method not implemented.')}
 }

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Collapse, Tooltip } from 'antd'
 import { generals } from './config'
-import Designer from '@/adapters/designer'
+import Designer from '@/adapter/designer'
 import "./leftpanel.scss";
 const { Panel } = Collapse
 

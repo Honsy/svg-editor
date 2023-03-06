@@ -1,4 +1,4 @@
-import Designer from "@/adapters/designer";
+import Designer from "@/adapter/designer";
 import React, { useEffect, useRef } from "react"
 
 export interface ILeftPanelProp {
