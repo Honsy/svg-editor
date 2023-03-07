@@ -3,14 +3,24 @@ import { Utils } from '@/helpers/utils'
 import { Device, DeviceNetProperty, DeviceType, DEVICE_PREFIX } from '@/models/device'
 import { View } from '@/models/hmi'
 import { ProjectData } from '@/models/project'
+import { logger } from '@/utils/logger'
+import EmitService, { ServiceEvents } from './emit.service'
+
+export enum SaveMode {
+  Current,
+  Save,
+  SaveAs
+}
 
 export class ProjectService {
   projectData: ProjectData
   appService: any
   ready: any
-  constructor() {
+  emit: EmitService
+  constructor(emit: EmitService) {
     this.load()
-    this.ready = true;
+    this.ready = true
+    this.emit = emit
   }
 
   private load() {
@@ -18,7 +28,7 @@ export class ProjectService {
     if (!proj) {
       this.setNewProject()
     } else {
-      this.projectData = JSON.parse(proj);
+      this.projectData = JSON.parse(proj)
     }
   }
 
@@ -36,6 +46,10 @@ export class ProjectService {
     saveStorageProject(this.projectData)
   }
 
+  saveProject(mode = SaveMode.Save) {
+    logger.log("保存项目")
+    this.emit.trigger(ServiceEvents.SERVICE_SAVE_CURRENT, { mode })
+  }
   /**
    * get hmi resource
    */

@@ -58,6 +58,7 @@ export function enableLogs(debugConfig: boolean | ILogger, id: string): void {
     (self.console && debugConfig === true) ||
     typeof debugConfig === 'object'
   ) {
+    console.log('d111')
     exportLoggerFunctions(
       debugConfig,
       // Remove out from list here to hard-disable a log-level

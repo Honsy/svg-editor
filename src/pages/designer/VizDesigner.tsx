@@ -13,7 +13,7 @@ const VizDesigner: React.FC<any> = ({}) => {
 
   return (
     <div className="iv-designer">
-      <TopPanel></TopPanel>
+      <TopPanel designer={designer}></TopPanel>
       <div className="iv-designer-container">
         <LeftPanel designer={designer}></LeftPanel>
         <Editor designer={designer}></Editor>

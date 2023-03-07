@@ -7,8 +7,11 @@ import { EventEmitter } from 'eventemitter3'
 import { logger } from '@/utils/logger'
 import { EditorResult, ErrorDetails, ErrorTypes } from '@/events/event.data'
 import { service } from '@/services/service'
-import { Hmi, View, ViewType } from '@/models/hmi'
+import { Hmi, LayoutSettings, View, ViewType } from '@/models/hmi'
 import { Utils } from '@/helpers/utils'
+import { ServiceEvents } from '@/services/emit.service'
+import { SaveMode } from '@/services/project.service'
+import { ServiceSaveData } from '@/services/config/emit.config'
 
 export interface DesignerConfig {
   debug: boolean
@@ -53,12 +56,24 @@ export default class Designer implements DesignerEventEmitter {
     })
     // 初始化属性相关
     this.property = new DesignerProperty(this.editor)
+    this.initServiceListener();
     this.trigger(Events.EDITOR_LOADED, null)
-    this.loadHmi();
+    this.loadHmi()
   }
 
   initPropertyListener(domIds?: string[]) {
     this.property?.initPropertyListener(domIds)
+  }
+  // 启动服务监听器
+  initServiceListener() {
+    service.emitService.on(ServiceEvents.SERVICE_SAVE_CURRENT, (event, data: ServiceSaveData) => {
+      const { mode } = data
+      if (mode === SaveMode.Current) {
+        this.onSaveProject()
+      } else if (mode === SaveMode.Save) {
+        this.onSaveProject()
+      }
+    })
   }
 
   loadHmi() {
@@ -71,6 +86,27 @@ export default class Designer implements DesignerEventEmitter {
       this.hmi.views = []
       this.addView()
       // this.selectView(this.hmi.views[0].name);
+    } else {
+      let oldsel = localStorage.getItem('@frango.webeditor.currentview')
+      if (!oldsel && this.hmi.views.length) {
+        oldsel = this.hmi.views[0].name
+      }
+      for (let i = 0; i < this.hmi.views.length; i++) {
+        if (this.hmi.views[i].name === oldsel) {
+          this.onSelectView(this.hmi.views[i])
+          break
+        }
+      }
+      if (!this.currentView) {
+        this.onSelectView(this.hmi.views[0])
+      }
+      // check and set start page
+      if (!this.hmi.layout) {
+        this.hmi.layout = new LayoutSettings()
+      }
+      if (!this.hmi.layout.start) {
+        this.hmi.layout.start = this.hmi.views[0].id
+      }
     }
   }
 
@@ -78,7 +114,6 @@ export default class Designer implements DesignerEventEmitter {
    * Add View to Project with a default name View_[x]
    */
   addView(name?: string, type?: ViewType): string {
-    console.log(name, type)
     if (this.hmi.views) {
       let nn = 'View_'
       let idx = 1
@@ -112,6 +147,18 @@ export default class Designer implements DesignerEventEmitter {
       return v.id
     }
     return null
+  }
+
+  /**
+   * Save Project
+   * Save the current View
+   */
+  onSaveProject() {
+    if (this.currentView) {
+      this.currentView.svgcontent = this.getContent()
+      console.log("this.getContent", this.getContent())
+      this.saveView(this.currentView)
+    }
   }
 
   /**
