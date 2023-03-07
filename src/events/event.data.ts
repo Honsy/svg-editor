@@ -24,6 +24,7 @@ export enum ErrorDetails {
 
 export interface EditorData {
   result: EditorResult
+  hmi: Hmi
 }
 
 export interface EditorPointData {

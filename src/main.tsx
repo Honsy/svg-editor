@@ -6,10 +6,7 @@ import "./styles/index.scss"
 import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import { DesignerContext, designer } from "./context/designer.context";
-import { Service } from './services/service'
-
-Service.init();
-
+import './services/service'
 
 (function () {
   const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

@@ -433,7 +433,9 @@ export class SvgEditor extends SvgEditorStartup {
     }
     this.updateWireFrame()
   }
+  setColor(color, alfa, type) {
 
+  }
   /**
    *
    * @param {string} color
@@ -481,6 +483,9 @@ export class SvgEditor extends SvgEditorStartup {
     throw new Error('Method not implemented.')
   }
 
+  getSvgString() {
+    return this.svgCanvas.getSvgString()
+  }
   /**
    * Invokes the callbacks previous set by `svgthis.ready`
    * @function module:SVGthis.runCallbacks

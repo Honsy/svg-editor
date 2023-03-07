@@ -5,22 +5,30 @@ import { SvgEditor } from '@/lib/svgEditor/SvgEditor'
 import DesignerProperty from './property/designer.property'
 import { EventEmitter } from 'eventemitter3'
 import { logger } from '@/utils/logger'
-import { ErrorDetails, ErrorTypes } from '@/events/event.data'
+import { EditorResult, ErrorDetails, ErrorTypes } from '@/events/event.data'
+import { service } from '@/services/service'
+import { Hmi, View, ViewType } from '@/models/hmi'
+import { Utils } from '@/helpers/utils'
 
 export interface DesignerConfig {
   debug: boolean
 }
 
 export default class Designer implements DesignerEventEmitter {
+  readonly colorDefault = {
+    fill: '#FFFFFF',
+    stroke: '#000000'
+  }
   currentMode: string
-  colorFill: any
+  colorFill: any = this.colorDefault.fill
   colorStroke: any
-  colorDefault: any
   imagefile: any
   config: DesignerConfig
   editor: SvgEditor | null
   property: DesignerProperty | null
   private _emitter: DesignerEventEmitter = new EventEmitter()
+  currentView: any
+  hmi: Hmi
 
   constructor() {
     this.config = {
@@ -45,12 +53,113 @@ export default class Designer implements DesignerEventEmitter {
     })
     // 初始化属性相关
     this.property = new DesignerProperty(this.editor)
-    console.log('trigger listener')
-    this.trigger(Events.EDITOR_LOADED, null);
+    this.trigger(Events.EDITOR_LOADED, null)
+    this.loadHmi();
   }
 
   initPropertyListener(domIds?: string[]) {
     this.property?.initPropertyListener(domIds)
+  }
+
+  loadHmi() {
+    this.currentView = null
+    console.log('tigger')
+    this.hmi = service.projectService.getHmi()
+    this.trigger(Events.EDITOR_HMI_LOADED, { result: EditorResult.success, hmi: this.hmi })
+    // check new hmi
+    if (!this.hmi.views || this.hmi.views.length <= 0) {
+      this.hmi.views = []
+      this.addView()
+      // this.selectView(this.hmi.views[0].name);
+    }
+  }
+
+  /**
+   * Add View to Project with a default name View_[x]
+   */
+  addView(name?: string, type?: ViewType): string {
+    console.log(name, type)
+    if (this.hmi.views) {
+      let nn = 'View_'
+      let idx = 1
+      for (idx = 1; idx < this.hmi.views.length + 2; idx++) {
+        let found = false
+        for (var i = 0; i < this.hmi.views.length; i++) {
+          if (this.hmi.views[i].name === nn + idx) {
+            found = true
+            break
+          }
+        }
+        if (!found) break
+      }
+      let v = new View()
+      v.type = type
+      if (name) {
+        v.name = name
+      } else if (this.hmi.views.length <= 0) {
+        v.name = 'MainView'
+      } else {
+        v.name = nn + idx
+        v.profile.bkcolor = '#ffffffff'
+      }
+      if (type === Utils.getEnumKey(ViewType, ViewType.cards)) {
+        v.profile.bkcolor = 'rgba(67, 67, 67, 1)'
+      }
+      v.id = 'v_' + Utils.getShortGUID()
+      this.hmi.views.push(v)
+      this.onSelectView(v)
+      this.saveView(this.currentView)
+      return v.id
+    }
+    return null
+  }
+
+  /**
+   * select the view, save current vieww before
+   * @param view selected view to load resource
+   */
+  onSelectView(view) {
+    if (this.currentView) {
+      this.currentView.svgcontent = this.getContent()
+      // this.hmi.views[this.currentView].svgcontent = window.svgEditor.getSvgString();
+    } else {
+      this.setFillColor(this.colorFill)
+    }
+    if (this.currentView) {
+      this.saveView(this.currentView)
+    }
+    this.currentView = view
+    // if (this.currentView.type === Utils.getEnumKey(ViewType, ViewType.cards)) {
+    //   this.editorMode = EditorModeType.CARDS
+    // } else {
+    //   this.editorMode = EditorModeType.SVG
+    // }
+    // emitter.trigger(Events.EDITOR_SELECT_VIEW, {view: this.currentView});
+    // localStorage.setItem('@frango.webeditor.currentview', this.currentView.name)
+    // this.loadView(this.currentView)
+  }
+
+  private getContent() {
+    if (this.currentView.type === Utils.getEnumKey(ViewType, ViewType.cards)) {
+      this.currentView.svgcontent = ''
+      return this.currentView.svgcontent
+      // let temp = JSON.parse(JSON.stringify(this.dashboard));
+      // for (let i = 0; i < temp.length; i++) {
+      //     delete temp[i]['content'];
+      //     delete temp[i]['background'];
+      // }
+      // return JSON.stringify(temp);
+    } else {
+      return this.editor.getSvgString()
+    }
+  }
+
+  /**
+   * Set or Add the View to Project
+   * Save the View to Server
+   */
+  private saveView(view: View) {
+    service.projectService.setView(view)
   }
   /**
    * add image to view
@@ -143,8 +252,8 @@ export default class Designer implements DesignerEventEmitter {
     let color = event
     if (color.charAt(0) === '#') color = color.slice(1)
     let alfa = 100
-    if (window.svgEditor) {
-      window.svgEditor.setColor(color, alfa, 'fill')
+    if (this.editor) {
+      this.editor.setColor(color, alfa, 'fill')
     }
   }
   /**
@@ -155,7 +264,7 @@ export default class Designer implements DesignerEventEmitter {
     let color = event
     if (color.charAt(0) === '#') color = color.slice(1)
     let alfa = 100
-    window.svgEditor.setColor(color, alfa, 'stroke')
+    this.editor.setColor(color, alfa, 'stroke')
     // this.fillcolor;
   }
 

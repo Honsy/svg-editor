@@ -3,6 +3,7 @@ import { Collapse, Tooltip } from 'antd'
 import { generals } from './config'
 import Designer from '@/adapter/designer'
 import "./leftpanel.scss";
+import { Events } from '@/events/event';
 const { Panel } = Collapse
 
 export interface ILeftPanelProp {
@@ -11,6 +12,12 @@ export interface ILeftPanelProp {
 
 const LeftPanel: React.FC<ILeftPanelProp> = ({ designer }) => {
   const [hmi, setHMI] = useState(null)
+
+  const handleHmiLoaded = (event, data) => {
+    console.log('event', event, data);
+  }
+  console.log('listener')
+  designer.on(Events.EDITOR_HMI_LOADED, handleHmiLoaded)
   // const [designer, setDesigner] = useState(null);
   console.log(generals)
   return (

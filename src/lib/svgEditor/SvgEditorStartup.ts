@@ -66,8 +66,6 @@ export class SvgEditorStartup extends BaseEditorStartup {
       }
     )
 
-    this.svgCanvas.bind('selected', () => {console.log('ddddd')})
-
     this.setBackground(this.configObj.pref('bkgd_color'), this.configObj.pref('bkgd_url'))
     // update resolution option with actual resolution
     const res = this.svgCanvas.getResolution()
