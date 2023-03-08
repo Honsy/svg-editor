@@ -2,6 +2,12 @@
   .iv-panel-block {
     background: #333;
   }
+  .iv-leftpanel-views {
+    .iv-views-header {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 }
 
 .svg-tool-button {

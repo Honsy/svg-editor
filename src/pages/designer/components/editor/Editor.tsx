@@ -1,13 +1,10 @@
 import Designer from "@/adapter/designer";
 import React, { useEffect, useRef } from "react"
+import { designer } from "../../VizDesigner";
 
-export interface ILeftPanelProp {
-  designer: Designer
-}
+export interface ILeftPanelProp {}
 
-const Editor: React.FC<ILeftPanelProp> = ({
-  designer
-}) => {
+const Editor: React.FC<ILeftPanelProp> = ({ }) => {
   const editor = useRef(null);
 
   useEffect(() => {

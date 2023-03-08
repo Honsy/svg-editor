@@ -6,18 +6,18 @@ import Editor from "./components/editor/Editor";
 import Designer from "@/adapter/designer";
 import "./viz.designer.scss";
 
+export const designer = new Designer();
+
 const VizDesigner: React.FC<any> = ({}) => {
   const [currentMode, setCurrentMode] = useState('')
-  
-  const designer = new Designer();
 
   return (
     <div className="iv-designer">
-      <TopPanel designer={designer}></TopPanel>
+      <TopPanel></TopPanel>
       <div className="iv-designer-container">
-        <LeftPanel designer={designer}></LeftPanel>
-        <Editor designer={designer}></Editor>
-        <RightPanel designer={designer}></RightPanel>
+        <LeftPanel></LeftPanel>
+        <Editor></Editor>
+        <RightPanel></RightPanel>
       </div>
     </div>
   )

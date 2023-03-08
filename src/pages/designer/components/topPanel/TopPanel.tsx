@@ -3,12 +3,10 @@ import { service } from "@/services/service"
 import { Button } from "antd"
 import React, { useRef } from "react"
 
-export interface ITopPanelProp {
-  designer: Designer
-}
+export interface ITopPanelProp {}
 
 
-const TopPanel: React.FC<ITopPanelProp> = ({ designer }) => {
+const TopPanel: React.FC<ITopPanelProp> = ({ }) => {
   
   const onSave = () => {
     console.log('dd11')

@@ -1,17 +1,21 @@
 import React, { useRef, useState } from 'react'
-import { Collapse, Dropdown, MenuProps, Tooltip } from 'antd'
+import { Button, Collapse, Dropdown, MenuProps, Tooltip } from 'antd'
 import { generals } from './config'
 import Designer from '@/adapter/designer'
 import "./leftpanel.scss";
 import { Events } from '@/events/event';
 import { Hmi } from '@/models/hmi';
+import { designer } from '../../VizDesigner';
+import AddView from "../addView/addView";
+import useModal from '@/hooks/ui/useModal';
+
 const { Panel } = Collapse
 
-export interface ILeftPanelProp {
-  designer: Designer
-}
+export interface ILeftPanelProp {}
 
-const LeftPanel: React.FC<ILeftPanelProp> = ({ designer }) => {
+const LeftPanel: React.FC<ILeftPanelProp> = ({ }) => {
+  let addViewModal = false;
+  const {hide, show, visible, RenderModal} = useModal();
   const [hmi, setHMI] = useState<Hmi>(null)
   const operates = ['删除', '重命名', '属性', '克隆', '导出']
   const items: MenuProps['items'] = operates.map((item, index) => {
@@ -31,19 +35,31 @@ const LeftPanel: React.FC<ILeftPanelProp> = ({ designer }) => {
   const isViewActive = (item) => {
     return false
   }
-  const handleOperateClick = () => {
+  const handleOperateClick = (e) => {
 
   }
 
   const showMenus = (item) => {
 
   }
+  const handleAddViewClick = () => {
+    show()
+  }
 
   designer.on(Events.EDITOR_HMI_LOADED, handleHmiLoaded)
 
   return (
     <div className="iv-leftpanel">
+      <RenderModal>
+        <AddView></AddView>
+      </RenderModal>
       <div className='iv-leftpanel-views'>
+        <div className='iv-views-header'>
+          <p>视图</p>
+          <div>
+            <Button type="text" onClick={handleAddViewClick}>添加</Button>
+          </div>
+        </div>
         {
           hmi && (
             hmi.views.map((item, index) => {

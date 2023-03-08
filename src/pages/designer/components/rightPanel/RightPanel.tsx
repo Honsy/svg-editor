@@ -1,12 +1,11 @@
 import Designer from '@/adapter/designer'
 import { Events } from '@/events/event'
 import React, { useEffect, useRef } from 'react'
+import { designer } from '../../VizDesigner'
 
-export interface IRightPanelProp {
-  designer: Designer
-}
+export interface IRightPanelProp {}
 
-const RightPanel: React.FC<IRightPanelProp> = ({ designer }) => {
+const RightPanel: React.FC<IRightPanelProp> = ({ }) => {
   const handleEditorInit = () => {
     designer.initPropertyListener()
   }
