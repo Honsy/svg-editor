@@ -16,6 +16,7 @@ export default class DesignerProperty {
 
   constructor(editor: SvgEditor) {
     this.editor = editor
+    this.editor.svgCanvas.bind('selected', this.selectedChanged.bind(this))
   }
 
   // 属性Dom改变监听 触发editor事件
@@ -49,8 +50,6 @@ export default class DesignerProperty {
         $id(item).addEventListener('change', this.attrChanger.bind(this))        
       }
     })
-
-    this.editor.svgCanvas.bind('selected', this.selectedChanged.bind(this))
   }
 
   selectedChanged(win: any, elems: any) {
@@ -98,7 +97,7 @@ export default class DesignerProperty {
 
     const isNode = currentMode === 'pathedit' 
 
-    $("#selected_panel, #multiselected_panel, #g_panel, #rect_panel, #circle_panel, #ellipse_panel, #line_panel, #text_panel, #image_panel, #container_panel,#use_panel, #a_panel, #xy_panel").hide();
+    $("#selected_panel, #multiselected_panel, #threemoreselected_panel, #g_panel, #rect_panel, #circle_panel,#ellipse_panel, #line_panel, #text_panel, #image_panel, #container_panel, #use_panel, #a_panel, #xy_panel, #marker_panel, #htmlctrl_panel, #tool_stroke, #tool_angle, #shape_panel").hide();
     console.log($("#selected_panel"))
     if (elem) {
       const elname = elem.nodeName

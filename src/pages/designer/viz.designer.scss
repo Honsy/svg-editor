@@ -14,7 +14,10 @@
       height: 100%;
     }
     .iv-editor {
-      flex: auto;
+      position: relative;
+      // flex: auto;
+      flex: calc(100% - 520px);
+      width: calc(100% - 520px);
     }
     .iv-rightpanel {
       flex: 0 0 260px;

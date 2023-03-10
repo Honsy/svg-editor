@@ -140,12 +140,12 @@ class Rulers {
       const bigInt = multi * uMulti
 
       ctx.font = '9px sans-serif'
-
       let rulerD = ((contentDim / uMulti) % multi) * uMulti
       let labelPos = rulerD - bigInt
       // draw big intervals
       let ctxNum = 0
       while (rulerD < totalLen) {
+        ctx.fillStyle = "#CACACA";
         labelPos += bigInt
         // const realD = rulerD - contentDim; // Currently unused
 

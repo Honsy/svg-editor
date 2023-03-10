@@ -1,5 +1,6 @@
 import SvgCanvas from '@svgedit/svgcanvas'
 import { BaseEditorStartup } from './../base/BaseEditorStartup'
+import ConfigObj from './ConfigObj'
 import Rulers from './Rulers'
 
 const { $id, $qq, $click, convertUnit } = SvgCanvas
@@ -9,7 +10,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
   messageQueue: never[]
   $container: any
   storage: Storage = window.localStorage
-  configObj: any
+  configObj: ConfigObj
   workarea: any
   svgCanvas: any
   rulers: any
@@ -66,6 +67,8 @@ export class SvgEditorStartup extends BaseEditorStartup {
       }
     )
 
+    this.svgCanvas.textActions.setInputElem($id('text'))
+
     this.setBackground(this.configObj.pref('bkgd_color'), this.configObj.pref('bkgd_url'))
     // update resolution option with actual resolution
     const res = this.svgCanvas.getResolution()
@@ -121,6 +124,10 @@ export class SvgEditorStartup extends BaseEditorStartup {
         return false
       }
       return true
+    })
+
+    window.addEventListener('mouseup', () => {
+      panning = false
     })
 
     document.addEventListener('keydown', (e: any) => {
@@ -187,6 +194,8 @@ export class SvgEditorStartup extends BaseEditorStartup {
 
     addListenerMulti(window, 'load resize', centerCanvas)
 
+    this.svgCanvas.clearSelection();
+
     this.ready(() => {
       if (this.configObj.curConfig.showRulers) {
         this.rulers.display(true)
@@ -212,6 +221,16 @@ export class SvgEditorStartup extends BaseEditorStartup {
     // $('#svgcanvas').on('mousewheel DOMMouseScroll', this.handleMouseWheel)
     // this.rulers = new Rulers(this)
   }
+
+          /**
+     * @function module:SVGthis.setPanning
+     * @param {boolean} active
+     * @returns {void}
+     */
+  setPanning(active,keypan) {
+    this.svgCanvas.spaceKey = keypan = active
+  }
+  
   /**
    * @fires module:svgcanvas.SvgCanvas#event:ext_addLangData
    * @fires module:svgcanvas.SvgCanvas#event:ext_langReady

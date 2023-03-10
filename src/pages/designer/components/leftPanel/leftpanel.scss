@@ -8,6 +8,11 @@
       justify-content: space-between;
     }
   }
+  .iv-view-item {
+    &.active {
+      background-color: red;
+    }
+  }
 }
 
 .svg-tool-button {

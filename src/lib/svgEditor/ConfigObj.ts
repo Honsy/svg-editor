@@ -44,6 +44,7 @@ export default class ConfigObj {
   defaultExtensions: string[]
   curConfig: any
   editor: SvgEditor
+  preferences: boolean
   /**
    * @param {PlainObject} editor
    */
@@ -162,7 +163,7 @@ export default class ConfigObj {
       // PATH CONFIGURATION
       // The following path configuration items are disallowed in the URL (as should any future path configurations)
       imgPath: './images',
-      extPath: './extensions',
+      extPath: '/static/extensions',
       // DOCUMENT PROPERTIES
       // Change the following to a preference (already in the Document Properties dialog)?
       dimensions: [640, 480],
@@ -497,7 +498,7 @@ export default class ConfigObj {
   *  button to auto-calculate background, but otherwise uses `svgEditor.configObj.pref()` to
   *  be able to get default prefs or overridable settings
   */
-  pref (key: any, val: any, mayBeEmpty?: any) {
+  pref (key: any, val?: any, mayBeEmpty?: any) {
     if (mayBeEmpty || val) {
       this.curPrefs[key] = val
       return undefined

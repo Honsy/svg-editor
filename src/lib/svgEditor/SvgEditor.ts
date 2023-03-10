@@ -1,7 +1,7 @@
 import ConfigObj from './ConfigObj'
 import { SvgEditorStartup } from './SvgEditorStartup'
 import { isMac } from '@svgedit/svgcanvas/common/browser'
-import { transformPoint } from '@svgedit/svgcanvas/core/math'
+import { isValidUnit } from '@svgedit/svgcanvas/core/units'
 import { snapToGrid } from '@svgedit/svgcanvas/core/utilities'
 
 import SvgCanvas from '@svgedit/svgcanvas'
@@ -435,6 +435,28 @@ export class SvgEditor extends SvgEditorStartup {
   }
   setColor(color, alfa, type) {
 
+  }
+  setDocProperty(name, width, height, bkColor) {
+    const widthFlag = !(width != 'fit' && !isValidUnit("width", width))
+    const heightFlag = !(height != 'fit' && !isValidUnit("height", height))
+    if (widthFlag && heightFlag) {
+      this.svgCanvas.setResolution(width,height);
+    }
+
+    if (!bkColor) {
+      bkColor = '#fff'
+    }
+    this.svgCanvas.setBackground(bkColor)
+    this.updateCanvas()
+  }
+  setSvgString(svg: string) {
+    this.svgCanvas.setSvgString(svg);
+  }
+
+  clickClearAll() {
+    const dimensions = this.svgCanvas.curConfig.dimensions
+    this.svgCanvas.clear();
+    console.log(this.svgCanvas)
   }
   /**
    *

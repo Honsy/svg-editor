@@ -12,6 +12,7 @@ import { Utils } from '@/helpers/utils'
 import { ServiceEvents } from '@/services/emit.service'
 import { SaveMode } from '@/services/project.service'
 import { ServiceSaveData } from '@/services/config/emit.config'
+import DesignerLayer from './property/designer.layer'
 
 export interface DesignerConfig {
   debug: boolean
@@ -32,6 +33,7 @@ export default class Designer implements DesignerEventEmitter {
   private _emitter: DesignerEventEmitter = new EventEmitter()
   currentView: any
   hmi: Hmi
+  layer: DesignerLayer
 
   constructor() {
     this.config = {
@@ -56,6 +58,9 @@ export default class Designer implements DesignerEventEmitter {
     })
     // 初始化属性相关
     this.property = new DesignerProperty(this.editor)
+    this.layer = new DesignerLayer(this.editor);
+
+    this.layer.populateLayers();
     this.initServiceListener();
     this.trigger(Events.EDITOR_LOADED, null)
     this.loadHmi()
@@ -176,6 +181,8 @@ export default class Designer implements DesignerEventEmitter {
       this.saveView(this.currentView)
     }
     this.currentView = view
+    this.trigger(Events.EDITOR_SELECT_VIEW, {view: this.currentView})
+    this.loadView(this.currentView)
     // if (this.currentView.type === Utils.getEnumKey(ViewType, ViewType.cards)) {
     //   this.editorMode = EditorModeType.CARDS
     // } else {
@@ -185,7 +192,44 @@ export default class Designer implements DesignerEventEmitter {
     // localStorage.setItem('@frango.webeditor.currentview', this.currentView.name)
     // this.loadView(this.currentView)
   }
+  
+  loadView(view: View) {
+    if (view) {
+      this.clearEditor()
+      let svgcontent = ''
+      let v = this.getView(view.name)
+      if (v) {
+        svgcontent = v.svgcontent
+      }
+      if (svgcontent.length <= 0) {
+        svgcontent =
+          '<svg id="' +
+          view.name +
+          '" width="' +
+          view.profile.width +
+          '" height="' +
+          view.profile.height +
+          '" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">' +
+          '<filter id="blur-filter" x="-3" y="-3" width="200" height="200"><feGaussianBlur in="SourceGraphic" stdDeviation="3" /></filter>' +
+          '<g><title>Layer 1</title></g></svg>'
+      }
+      this.editor.setDocProperty(view.name, view.profile.width, view.profile.height, view.profile.bkcolor)
+      this.editor.setSvgString(svgcontent)
 
+      // check gauge to init
+      // this.gaugesRef = []
+      // setTimeout(() => {
+      //   for (let key in v.items) {
+      //     let ga: GaugeSettings = this.getGaugeSettings(v.items[key])
+      //     this.checkGaugeAdded(ga)
+      //   }
+      //   window.svgEditor.refreshCanvas()
+      // }, 500)
+    }
+  }
+  clearEditor() {
+    this.editor.clickClearAll()
+  }
   private getContent() {
     if (this.currentView.type === Utils.getEnumKey(ViewType, ViewType.cards)) {
       this.currentView.svgcontent = ''
@@ -200,7 +244,18 @@ export default class Designer implements DesignerEventEmitter {
       return this.editor.getSvgString()
     }
   }
-
+  /**
+   * get view from hmi views list
+   * @param name view name
+   */
+  private getView(name) {
+    for (var i = 0; i < this.hmi.views.length; i++) {
+      if (this.hmi.views[i].name === name) {
+        return this.hmi.views[i]
+      }
+    }
+    return null
+  }
   /**
    * Set or Add the View to Project
    * Save the View to Server

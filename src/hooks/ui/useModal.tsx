@@ -48,7 +48,7 @@ function useModal<T = any, K = IUseModal>(options: IUseModal = {}, debug?: boole
         onText: '确定',
         keyboard: false,
         maskClosable: false,
-        visible: visibleRef.current,
+        open: visibleRef.current,
         ...rest,
         ...optionsRef.current,
         ...modalDataRef.current,

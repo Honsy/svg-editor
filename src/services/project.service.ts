@@ -77,7 +77,12 @@ export class ProjectService {
     //     // this.notifySaveError(err);
     // });
   }
-
+  getLayoutTheme() {
+    if (this.projectData.hmi.layout) {
+      return this.projectData.hmi.layout.theme
+    }
+    return null
+  }
   /**
    * Remove the View from Project
    * Delete from Server
