@@ -14,6 +14,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
   configObj: ConfigObj
   workarea: any
   svgCanvas: any
+  svgCanvasDom: any
   rulers: any
   selectedElement: any
   $svgEditor: any
@@ -44,11 +45,9 @@ export class SvgEditorStartup extends BaseEditorStartup {
       this.$svgEditor = $qq('.svg_editor')
       this.workarea = $id('workarea')
     } catch (error) {}
-    /**
-     * @name module:SVGthis.canvas
-     * @type {module:svgcanvas.SvgCanvas}
-     */
-    this.svgCanvas = new SvgCanvas($id('svgcanvas'), this.configObj.curConfig)
+    
+    this.svgCanvasDom = $id('svgcanvas');
+    this.svgCanvas = new SvgCanvas(this.svgCanvasDom, this.configObj.curConfig)
     // 初始化svg工具链
     init(this.svgCanvas);
 

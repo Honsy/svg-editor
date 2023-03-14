@@ -1,7 +1,4 @@
 
-declare module "@svgedit/svgcanvas/common/util.js" {
-  export function mergeDeep(target, source): any;
-}
 
 declare module "@svgedit/svgcanvas/core/path" {
   export const path;

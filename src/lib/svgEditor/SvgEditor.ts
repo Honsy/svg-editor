@@ -1,16 +1,20 @@
 import ConfigObj from './ConfigObj'
 import { SvgEditorStartup } from './SvgEditorStartup'
 import { isMac } from '@svgedit/svgcanvas/common/browser'
-import { isValidUnit } from "@svgedit/svgcanvas/core/units";
-import { getElement, init } from '@svgedit/svgcanvas/core/utilities'
+import { isValidUnit } from '@svgedit/svgcanvas/core/units'
+import { assignAttributes, cleanupElement, getElement, init } from '@svgedit/svgcanvas/core/utilities'
 
 import SvgCanvas from '@svgedit/svgcanvas'
+import { NS } from '@svgedit/svgcanvas/core/namespaces'
+import { merge } from 'lodash'
+import { emitter } from './utils/event'
 
 const { $id, $click, decode64, blankPageObjectURL } = SvgCanvas
 
 export class SvgEditor extends SvgEditorStartup {
   currentMode: string
   lastClickPoint: number
+  shapeProperty: any
   loadFromDataURI(source: any) {
     throw new Error('Method not implemented.')
   }
@@ -74,6 +78,29 @@ export class SvgEditor extends SvgEditorStartup {
     this.configObj.preferences = false
     this.canvMenu = null
     this.goodLangs = ['ar', 'cs', 'de', 'en', 'es', 'fa', 'fr', 'fy', 'hi', 'it', 'ja', 'nl', 'pl', 'pt-BR', 'ro', 'ru', 'sk', 'sl', 'sv', 'tr', 'uk', 'zh-CN', 'zh-TW']
+    this.shapeProperty = {
+      shape: {
+        fill: ('none' == this.configObj.curConfig.initFill.color ? '' : '#') + this.configObj.curConfig.initFill.color,
+        fill_paint: null,
+        fill_opacity: this.configObj.curConfig.initFill.opacity,
+        stroke: '#' + this.configObj.curConfig.initStroke.color,
+        stroke_paint: null,
+        stroke_opacity: this.configObj.curConfig.initStroke.opacity,
+        stroke_width: this.configObj.curConfig.initStroke.width,
+        stroke_dasharray: 'none',
+        stroke_linejoin: 'miter',
+        stroke_linecap: 'butt',
+        opacity: this.configObj.curConfig.initOpacity
+      }
+    }
+    this.shapeProperty.text = merge(this.shapeProperty.shape, {
+      fill: '#000000',
+      stroke_width: 0,
+      font_size: 14,
+      font_family: 'sans-serif',
+      text_anchor: 'middle'
+    })
+
     const modKey = isMac() ? 'meta+' : 'ctrl+'
     this.shortcuts = [
       // Shortcuts not associated with buttons
@@ -433,14 +460,12 @@ export class SvgEditor extends SvgEditorStartup {
     }
     this.updateWireFrame()
   }
-  setColor(color, alfa, type) {
-
-  }
+  setColor(color, alfa, type) {}
   setDocProperty(name, width, height, bkColor) {
-    const widthFlag = !(width != 'fit' && !isValidUnit("width", width))
-    const heightFlag = !(height != 'fit' && !isValidUnit("height", height))
+    const widthFlag = !(width != 'fit' && !isValidUnit('width', width))
+    const heightFlag = !(height != 'fit' && !isValidUnit('height', height))
     if (widthFlag && heightFlag) {
-      this.svgCanvas.setResolution(width,height);
+      this.svgCanvas.setResolution(width, height)
     }
 
     if (!bkColor) {
@@ -450,12 +475,12 @@ export class SvgEditor extends SvgEditorStartup {
     this.updateCanvas()
   }
   setSvgString(svg: string) {
-    this.svgCanvas.setSvgString(svg);
+    this.svgCanvas.setSvgString(svg)
   }
 
   clickClearAll() {
     const dimensions = this.svgCanvas.curConfig.dimensions
-    this.svgCanvas.clear();
+    this.svgCanvas.clear()
     console.log(this.svgCanvas)
   }
   /**
@@ -591,14 +616,85 @@ export class SvgEditor extends SvgEditorStartup {
     return this.svgCanvas.addExtension(name, initfn, initArgs)
   }
 
-
   addSvgGroupFromJson(e) {
-    var element = getElement(e.id);
+    let element = getElement(e.id)
+    const layer = this.svgCanvas.current_drawing_.getCurrentLayer()
     if (element && e.group != element.tagName) {
       console.log(this.svgCanvas)
       // this.svgCanvas.
       element = null
     }
+    element = document.createElement(NS.SVG, e.group)
+    element.setAttribute('id', e.id)
+    element.setAttribute('type', e.type)
+    if (layer) {
+      layer.appendChild(element)
+    }
+
+    for (let index = 0; index < e.elements.length; index++) {
+      const elementConfig = e.elements[index]
+      let newElement = document.createElementNS(NS.SVG, elementConfig.type)
+      assignAttributes(
+        newElement,
+        {
+          'stroke-width': this.shapeProperty.stroke_width,
+          'stroke-dasharray': this.shapeProperty.stroke_dasharray,
+          'stroke-linejoin': this.shapeProperty.stroke_linejoin,
+          'stroke-linecap': this.shapeProperty.stroke_linecap,
+          style: 'pointer-events:inherit'
+        },
+        100
+      )
+      assignAttributes(newElement, elementConfig.attr)
+      if (elementConfig.type === 'text') {
+        newElement.textContent = elementConfig.content
+      } else if (elementConfig.type === 'foreignObject') {
+        let content = elementConfig.content
+        if (content) {
+          for (let sIndex = 0; sIndex < content.length; sIndex++) {
+            const contentJSON = content[sIndex]
+            const contentElement = document.createElement(contentJSON.tag)
+            if (contentElement.tagName.toLowerCase() === 'select') {
+              const optionsElement = document.createElement('option')
+              optionsElement.setAttribute('test', ' ')
+              contentElement.appendChild(optionsElement)
+            } else if (contentElement.tagName.toLowerCase() === 'button') {
+              contentElement.innerHTML = 'button'
+            } else if (contentElement.tagName.toLowerCase() === 'span') {
+              contentJSON.value && (contentElement.innerHTML = contentJSON.value)
+              contentJSON.attr && assignAttributes(contentElement, contentJSON.attr)
+            }
+            assignAttributes(contentElement, contentJSON.attr)
+            contentJSON.style && contentElement.setAttribute('style', contentJSON.style)
+            if (contentElement.tagName.toLowerCase() === 'input') {
+              contentElement.style.backgroundColor = this.shapeProperty.fill
+              contentElement.style.color = this.shapeProperty.stroke
+            }
+            newElement.appendChild(contentElement)
+          }
+        }
+      }
+    }
+
+    if (e.curStyles) {
+      assignAttributes(element, {
+        fill: this.shapeProperty.fill,
+        stroke: this.shapeProperty.stroke,
+        "stroke-width": this.shapeProperty.stroke_width,
+        "stroke-dasharray": this.shapeProperty.stroke_dasharray,
+        "stroke-linejoin": this.shapeProperty.stroke_linejoin,
+        "stroke-linecap": this.shapeProperty.stroke_linecap,
+        style: "pointer-events:inherit"
+    }, 100)
+    }
+    assignAttributes(element,  e.attr, 100);
+    cleanupElement(element)
+    // 
+    this.emitter.emit('onGaugeAdded', {
+      id: e.id,
+      type: e.type
+    })
+    return element
   }
   /**
    *
@@ -633,9 +729,9 @@ export class SvgEditor extends SvgEditorStartup {
   }
   // ******************对外
   setMode(mode: string) {
-    this.svgCanvas.setMode(mode);
+    this.svgCanvas.setMode(mode)
   }
   clickToSetMode(mode: string) {
-    this.svgCanvas.setMode(mode);
+    this.svgCanvas.setMode(mode)
   }
 }

@@ -1,3 +1,5 @@
+import { Drawing } from "./draw";
+
 declare module '@svgedit/svgcanvas' {
     export default SvgCanvas;
     /**
@@ -73,7 +75,7 @@ declare module '@svgedit/svgcanvas' {
         container: HTMLElement;
         svgroot: any;
         svgContent: HTMLElement;
-        current_drawing_: any;
+        current_drawing_: Drawing;
         zoom: number;
         currentGroup: any;
         curText: any;

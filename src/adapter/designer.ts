@@ -56,6 +56,7 @@ export default class Designer implements DesignerEventEmitter {
         /* { pathName: '/packages/react-test/dist/react-test.js' } */
       ]
     })
+    this.editor.emitter.on('onGaugeAdded', this.onGaugeAdded)
     // 初始化属性相关
     this.property = new DesignerProperty(this.editor)
     this.layer = new DesignerLayer(this.editor);
@@ -79,6 +80,10 @@ export default class Designer implements DesignerEventEmitter {
         this.onSaveProject()
       }
     })
+  }
+
+  onGaugeAdded() {
+    console.log('onGaugeAdded')
   }
 
   loadHmi() {
