@@ -1,4 +1,5 @@
 import SvgCanvas from '@svgedit/svgcanvas'
+import { init } from '@svgedit/svgcanvas/core/utilities'
 import { BaseEditorStartup } from './../base/BaseEditorStartup'
 import ConfigObj from './ConfigObj'
 import Rulers from './Rulers'
@@ -48,6 +49,8 @@ export class SvgEditorStartup extends BaseEditorStartup {
      * @type {module:svgcanvas.SvgCanvas}
      */
     this.svgCanvas = new SvgCanvas($id('svgcanvas'), this.configObj.curConfig)
+    // 初始化svg工具链
+    init(this.svgCanvas);
 
     this.rulers = new Rulers(this)
     this.selectedElement = null

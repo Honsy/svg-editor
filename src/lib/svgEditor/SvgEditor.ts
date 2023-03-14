@@ -1,8 +1,8 @@
 import ConfigObj from './ConfigObj'
 import { SvgEditorStartup } from './SvgEditorStartup'
 import { isMac } from '@svgedit/svgcanvas/common/browser'
-import { isValidUnit } from '@svgedit/svgcanvas/core/units'
-import { snapToGrid } from '@svgedit/svgcanvas/core/utilities'
+import { isValidUnit } from "@svgedit/svgcanvas/core/units";
+import { getElement, init } from '@svgedit/svgcanvas/core/utilities'
 
 import SvgCanvas from '@svgedit/svgcanvas'
 
@@ -104,25 +104,25 @@ export class SvgEditor extends SvgEditorStartup {
       {
         key: 'shift+o',
         fn: () => {
-          this.svgCanvas.cycleElement(0)
+          this.svgCanvas.cycleElement(false)
         }
       },
       {
         key: 'shift+p',
         fn: () => {
-          this.svgCanvas.cycleElement(1)
+          this.svgCanvas.cycleElement(true)
         }
       },
       {
         key: 'tab',
         fn: () => {
-          this.svgCanvas.cycleElement(0)
+          this.svgCanvas.cycleElement(false)
         }
       },
       {
         key: 'shift+tab',
         fn: () => {
-          this.svgCanvas.cycleElement(1)
+          this.svgCanvas.cycleElement(true)
         }
       },
       {
@@ -590,6 +590,16 @@ export class SvgEditor extends SvgEditorStartup {
     }
     return this.svgCanvas.addExtension(name, initfn, initArgs)
   }
+
+
+  addSvgGroupFromJson(e) {
+    var element = getElement(e.id);
+    if (element && e.group != element.tagName) {
+      console.log(this.svgCanvas)
+      // this.svgCanvas.
+      element = null
+    }
+  }
   /**
    *
    * @param {Event} e
@@ -621,7 +631,6 @@ export class SvgEditor extends SvgEditorStartup {
     e.preventDefault()
     // hypothetical indicator should be removed here
   }
-
   // ******************对外
   setMode(mode: string) {
     this.svgCanvas.setMode(mode);

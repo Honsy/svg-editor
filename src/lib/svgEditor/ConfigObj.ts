@@ -163,7 +163,7 @@ export default class ConfigObj {
       // PATH CONFIGURATION
       // The following path configuration items are disallowed in the URL (as should any future path configurations)
       imgPath: './images',
-      extPath: '/static/extensions',
+      extPath: './../../extensions',
       // DOCUMENT PROPERTIES
       // Change the following to a preference (already in the Document Properties dialog)?
       dimensions: [640, 480],
@@ -214,8 +214,8 @@ export default class ConfigObj {
       'ext-panning',
       'ext-shapes',
       'ext-polystar',
-      'ext-storage',
-      'ext-opensave'
+      'ext-htmlbutton'
+      // 'ext-opensave'
     ]
     this.curConfig = {
       // We do not put on defaultConfig to simplify object copying

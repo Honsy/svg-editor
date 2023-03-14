@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Collapse, Dropdown, MenuProps, Tooltip } from 'antd'
-import { generals } from './config'
+import { controls, generals } from './config'
 import Designer from '@/adapter/designer'
 import "./leftpanel.scss";
 import { Events } from '@/events/event';
@@ -87,6 +87,23 @@ const LeftPanel: React.FC<ILeftPanelProp> = ({ }) => {
         <Panel header="通用组件" key="2">
           <div className="iv-panel-block">
             {generals.map((item) => {
+              return (
+                <Tooltip title={item.tooltip} key={item.value}>
+                  <div className={['svg-tool-button', designer.isModeActive(item.value) ? 'svg-tool-active' : ''].join(' ')} onClick={() => designer.setMode(item.value)}>
+                    <span className={item.icon}></span>
+                  </div>
+                </Tooltip>
+              )
+            })}
+            <div className={['svg-tool-button', designer.isModeActive('image') || designer.isModeActive('svg-image') ? 'svg-tool-active' : ''].join(' ')} onClick={() => designer.setMode('image')}>
+              <span className="icon-image"></span>
+              <input type="file" style={{ display: 'none' }} onChange={(e) => designer.onSetImage(e)} accept="image/png|jpg|svg" />
+            </div>
+          </div>
+        </Panel>
+        <Panel header="自定义组件" key="3">
+          <div className="iv-panel-block">
+            {controls.map((item) => {
               return (
                 <Tooltip title={item.tooltip} key={item.value}>
                   <div className={['svg-tool-button', designer.isModeActive(item.value) ? 'svg-tool-active' : ''].join(' ')} onClick={() => designer.setMode(item.value)}>
