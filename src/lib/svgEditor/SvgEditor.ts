@@ -14,7 +14,6 @@ const { $id, $click, decode64, blankPageObjectURL } = SvgCanvas
 export class SvgEditor extends SvgEditorStartup {
   currentMode: string
   lastClickPoint: number
-  shapeProperty: any
   loadFromDataURI(source: any) {
     throw new Error('Method not implemented.')
   }
@@ -78,28 +77,6 @@ export class SvgEditor extends SvgEditorStartup {
     this.configObj.preferences = false
     this.canvMenu = null
     this.goodLangs = ['ar', 'cs', 'de', 'en', 'es', 'fa', 'fr', 'fy', 'hi', 'it', 'ja', 'nl', 'pl', 'pt-BR', 'ro', 'ru', 'sk', 'sl', 'sv', 'tr', 'uk', 'zh-CN', 'zh-TW']
-    this.shapeProperty = {
-      shape: {
-        fill: ('none' == this.configObj.curConfig.initFill.color ? '' : '#') + this.configObj.curConfig.initFill.color,
-        fill_paint: null,
-        fill_opacity: this.configObj.curConfig.initFill.opacity,
-        stroke: '#' + this.configObj.curConfig.initStroke.color,
-        stroke_paint: null,
-        stroke_opacity: this.configObj.curConfig.initStroke.opacity,
-        stroke_width: this.configObj.curConfig.initStroke.width,
-        stroke_dasharray: 'none',
-        stroke_linejoin: 'miter',
-        stroke_linecap: 'butt',
-        opacity: this.configObj.curConfig.initOpacity
-      }
-    }
-    this.shapeProperty.text = merge(this.shapeProperty.shape, {
-      fill: '#000000',
-      stroke_width: 0,
-      font_size: 14,
-      font_family: 'sans-serif',
-      text_anchor: 'middle'
-    })
 
     const modKey = isMac() ? 'meta+' : 'ctrl+'
     this.shortcuts = [
@@ -620,13 +597,13 @@ export class SvgEditor extends SvgEditorStartup {
     let element = getElement(e.id)
     const layer = this.svgCanvas.current_drawing_.getCurrentLayer()
     if (element && e.group != element.tagName) {
-      console.log(this.svgCanvas)
       // this.svgCanvas.
       element = null
     }
-    element = document.createElement(NS.SVG, e.group)
+    element = this.$container.ownerDocument.createElementNS(NS.SVG, e.group)
     element.setAttribute('id', e.id)
     element.setAttribute('type', e.type)
+    console.log(element, layer, e)
     if (layer) {
       layer.appendChild(element)
     }
@@ -674,6 +651,7 @@ export class SvgEditor extends SvgEditorStartup {
           }
         }
       }
+      element.appendChild(newElement)
     }
 
     if (e.curStyles) {

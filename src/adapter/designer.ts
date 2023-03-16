@@ -81,11 +81,6 @@ export default class Designer implements DesignerEventEmitter {
       }
     })
   }
-
-  onGaugeAdded() {
-    console.log('onGaugeAdded')
-  }
-
   loadHmi() {
     this.currentView = null
     console.log('tigger')
@@ -120,6 +115,19 @@ export default class Designer implements DesignerEventEmitter {
     }
   }
 
+  onGaugeAdded() {
+    console.log('onGaugeAdded')
+  }
+  getGaugeSettings(ele: any) {
+    // console.log('ele', ele, this.currentView)
+    if (ele && this.currentView) {
+      if (this.currentView.items[ele.id]) {
+        return this.currentView.items[ele.id]
+      }
+      // return window.service.gaugesManager.createSettings(ele.id, ele.type)
+    }
+    return null
+  }
   /**
    * Add View to Project with a default name View_[x]
    */

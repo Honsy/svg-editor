@@ -3,6 +3,7 @@ import { init } from '@svgedit/svgcanvas/core/utilities'
 import { BaseEditorStartup } from './../base/BaseEditorStartup'
 import ConfigObj from './ConfigObj'
 import Rulers from './Rulers'
+import { merge } from 'lodash'
 
 const { $id, $qq, $click, convertUnit } = SvgCanvas
 
@@ -19,6 +20,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
   selectedElement: any
   $svgEditor: any
   storagePromptState: any
+  shapeProperty: any  
   /**
    *
    */
@@ -39,6 +41,28 @@ export class SvgEditorStartup extends BaseEditorStartup {
       this.storage = window.localStorage
     }
     this.configObj.load()
+    this.shapeProperty = {
+      shape: {
+        fill: ('none' == this.configObj.curConfig.initFill.color ? '' : '#') + this.configObj.curConfig.initFill.color,
+        fill_paint: null,
+        fill_opacity: this.configObj.curConfig.initFill.opacity,
+        stroke: '#' + this.configObj.curConfig.initStroke.color,
+        stroke_paint: null,
+        stroke_opacity: this.configObj.curConfig.initStroke.opacity,
+        stroke_width: this.configObj.curConfig.initStroke.width,
+        stroke_dasharray: 'none',
+        stroke_linejoin: 'miter',
+        stroke_linecap: 'butt',
+        opacity: this.configObj.curConfig.initOpacity
+      }
+    }
+    this.shapeProperty.text = merge(this.shapeProperty.shape, {
+      fill: '#000000',
+      stroke_width: 0,
+      font_size: 14,
+      font_family: 'sans-serif',
+      text_anchor: 'middle'
+    })
     // await import('./components/index.js')
     // await import('./dialogs/index.js')
     try {

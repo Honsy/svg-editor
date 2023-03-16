@@ -22,7 +22,8 @@ export enum ServiceErrorTypes {
 export enum ServiceEvents {
   // Fired before MediaSource is attaching to media element
   SERVICE_SAVE_CURRENT = 'serviceSaveCurrent',
-  SERVICE_ERROR = "serviceError"
+  SERVICE_ERROR = "serviceError",
+  HMI_SERVICE_VARIABLECHANGED = 'serviceHmiVariableChanged'
 }
 
 export interface ServiceListeners {
