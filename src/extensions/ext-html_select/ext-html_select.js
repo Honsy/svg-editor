@@ -1,21 +1,21 @@
 
-const name = 'html_switch';
+const name = 'html_select';
 
 export default {
   name,
   async init (l) {
     const svgEditor = this
     const { svgCanvas } = svgEditor
-    const width = 50;
-    const height = 28;
-    const mode = "html_switch";
+    const width = 80;
+    const height = 26;
+    const mode = "html_select";
     const classId = "svg-ext-" + mode;
-    const prefixId = "HXT_";
+    const prefixId = "HXS_";
     const t = {};
     let svgElement;
     return {
       callback: function () {
-        $("#html_switch_panel").hide()
+        $("#html_select_panel").hide()
       },
       mouseDown: function (e) {
         if (svgCanvas.getMode() === mode) {
@@ -25,6 +25,8 @@ export default {
           const startY = e.start_y;
           let o = svgCanvas.getNextId();
           let a = svgCanvas.getNextId().replace("svg_", prefixId);
+          let style = "width:100%;height:100%;text-align: left;margin-top:unset;background-color:" + fill + ";color:" + stroke + ";";
+          style += "font-size:14px;";
           let svgDom = {
             elements: [{
               type: "rect",
@@ -33,18 +35,19 @@ export default {
                 y: startY - height,
                 width: width,
                 height: height,
+                fill: fill,
+                stroke: stroke,
                 "stroke-width": 0,
                 id: o
               }
             }, {
               type: "foreignObject",
               content: [{
-                tag: "label",
+                tag: "select",
                 attr: {
-                  id: "T-" + a,
-                  type: "md-switch"
+                  id: "S-" + a,
                 },
-                style: "width:calc(100% - 6px);height:calc(100% - 6px);text-align:center;background-color:" + fill + ";color:" + stroke + ";margin: 3px 3px 3px 3px;"
+                style: style += "font-family:sans-serif;"
               }],
               attr: {
                 x: startX,
@@ -63,8 +66,8 @@ export default {
             attr: {
               type: classId,
               style: "pointer-events:none",
-              fill: "rgba(0,0,0,0)",
-              stroke: "rgba(0,0,0,0)",
+              fill: fill,
+              stroke: stroke,
               "xml:space": "preserve"
             },
             elements: svgDom.elements
@@ -72,11 +75,7 @@ export default {
           return {started: true}
         }
       },
-      mouseMove: function (e) {
-        if (svgCanvas.getMode() === "resize" && e && e.selected && e.selected.id && e.selected.id.startsWith(prefixId)) {
-          return e.selected.id
-        }
-      },
+      mouseMove: function (e) {},
       mouseUp: function (e) {
         if (svgCanvas.getMode() === mode) return {
           keep: e.event.clientX != t.x && e.event.clientY != t.y,
@@ -90,6 +89,33 @@ export default {
       getPrefixId: function () {
         return prefixId
       },
+      setFontAttribute: function (t) {
+        if (t.elem.getAttribute("type") === classId) {
+          l.walkTree(t.elem, function (e) {
+            if (e.nodeName.toLowerCase() === 'select') {
+              t.attr = t.attr.replace("text-anchor", "text-align")
+              t.value = t.value.replace("end", "right").replace("middle", "center").replace("start", "left")
+              e.style[t.attr] = t.value
+            }
+          })
+        }
+      },
+      getFontAttribute: function (e) {
+        if (e.elem.getAttribute("type") === classId) {
+          var r = false;
+          l.walkTree(e.elem, function (e) {
+            if (e.nodeName.toLowerCase() === "button") {
+              var t = e.style["text-align"];
+              t = t.replace("right", "end").replace("center", "middle").replace("left", "start"), r = {
+                fontSize: e.style["font-size"],
+                fontFamily: e.style["font-family"],
+                textAnchor: t
+              }
+            }
+          })
+          return r
+        }
+      }
     }
   }
 }

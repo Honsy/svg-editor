@@ -214,7 +214,11 @@ export default class ConfigObj {
       'ext-panning',
       'ext-shapes',
       'ext-polystar',
-      'ext-htmlbutton'
+      'ext-html_button',
+      'ext-html_input',
+      'ext-html_switch',
+      'ext-html_select',
+      'ext-value'
       // 'ext-opensave'
     ]
     this.curConfig = {

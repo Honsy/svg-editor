@@ -7,7 +7,7 @@ import { EventEmitter } from 'eventemitter3'
 import { logger } from '@/utils/logger'
 import { EditorResult, ErrorDetails, ErrorTypes } from '@/events/event.data'
 import { service } from '@/services/service'
-import { Hmi, LayoutSettings, View, ViewType } from '@/models/hmi'
+import { GaugeSettings, Hmi, LayoutSettings, View, ViewType } from '@/models/hmi'
 import { Utils } from '@/helpers/utils'
 import { ServiceEvents } from '@/services/emit.service'
 import { SaveMode } from '@/services/project.service'
@@ -34,6 +34,7 @@ export default class Designer implements DesignerEventEmitter {
   currentView: any
   hmi: Hmi
   layer: DesignerLayer
+  private gaugesRef = []
 
   constructor() {
     this.config = {
@@ -56,7 +57,7 @@ export default class Designer implements DesignerEventEmitter {
         /* { pathName: '/packages/react-test/dist/react-test.js' } */
       ]
     })
-    this.editor.emitter.on('onGaugeAdded', this.onGaugeAdded)
+    this.editor.emitter.on('onGaugeAdded', this.onGaugeAdded.bind(this))
     // 初始化属性相关
     this.property = new DesignerProperty(this.editor)
     this.layer = new DesignerLayer(this.editor);
@@ -113,20 +114,6 @@ export default class Designer implements DesignerEventEmitter {
         this.hmi.layout.start = this.hmi.views[0].id
       }
     }
-  }
-
-  onGaugeAdded() {
-    console.log('onGaugeAdded')
-  }
-  getGaugeSettings(ele: any) {
-    // console.log('ele', ele, this.currentView)
-    if (ele && this.currentView) {
-      if (this.currentView.items[ele.id]) {
-        return this.currentView.items[ele.id]
-      }
-      // return window.service.gaugesManager.createSettings(ele.id, ele.type)
-    }
-    return null
   }
   /**
    * Add View to Project with a default name View_[x]
@@ -381,6 +368,57 @@ export default class Designer implements DesignerEventEmitter {
     let alfa = 100
     this.editor.setColor(color, alfa, 'stroke')
     // this.fillcolor;
+  }
+
+  // ****************************Gauge*********************************
+  
+  onGaugeAdded(eleadded: any) {
+    let ga: GaugeSettings = this.getGaugeSettings(eleadded)
+    this.checkGaugeAdded(ga)
+    setTimeout(() => {
+      this.setMode('select', false)
+    }, 700)
+  }
+  getGaugeSettings(ele: any) {
+    if (ele && this.currentView) {
+      if (this.currentView.items[ele.id]) {
+        return this.currentView.items[ele.id]
+      }
+      return service.gaugesManager.createSettings(ele.id, ele.type)
+    }
+    return null
+  }
+
+    /**
+   * check and set the special gauge like ngx-uplot, ngx-gauge, ... if added
+   * if return true then the GaugeSettings is changed have to set again
+   * @param ga
+   */
+    async checkGaugeAdded(ga: GaugeSettings) {
+      let gauge = await service.gaugesManager.initElementAdded(ga, false)
+      if (gauge) {
+        if (gauge !== true) {
+          if (this.gaugesRef.indexOf(ga.id) === -1) {
+            this.gaugesRef[ga.id] = {
+              type: ga.type,
+              ref: gauge
+            }
+          }
+        }
+        this.setGaugeSettings(ga)
+      }
+    }
+
+      /**
+   * add the gauge settings to the current view items list
+   * @param ga GaugeSettings
+   */
+  private setGaugeSettings(ga) {
+    if (ga.id) {
+      this.currentView.items[ga.id] = ga
+    } else {
+      console.error('!TOFIX', ga)
+    }
   }
 
   // 事件监听器

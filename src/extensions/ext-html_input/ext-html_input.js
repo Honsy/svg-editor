@@ -12,6 +12,7 @@ export default {
     const classId = "svg-ext-" + mode;
     const prefixId = "HXI_";
     const t = {};
+    let svgElement;
     return {
       callback: function () {
         $("#html_input_panel").hide()
@@ -58,7 +59,7 @@ export default {
             }]
           }
           let c = svgCanvas.getNextId().replace("svg_", prefixId)
-          let g = svgEditor.addSvgGroupFromJson({
+          svgElement = svgEditor.addSvgGroupFromJson({
             group: "g",
             id: c,
             type: classId,
@@ -78,7 +79,7 @@ export default {
       mouseUp: function (e) {
         if (svgCanvas.getMode() === mode) return {
           keep: e.event.clientX != t.x && e.event.clientY != t.y,
-          element: g,
+          element: svgElement,
           started: false
         }
       },

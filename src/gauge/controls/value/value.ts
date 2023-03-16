@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from 'react-dom/client'
 import { GaugeBaseComponent } from "../../gaugeBase";
 import { GaugeDialogType } from "../../gauge-property/gaugeProperty";
-import { IotValue } from "../../gui-helpers/IotValue/iotValue";
+import { IotValue } from "../../gui-helpers/IotValue/IotValue";
 
 declare var SVG: any;
 
@@ -23,9 +23,6 @@ export class ValueComponent extends GaugeBaseComponent {
   static initElement(gab: GaugeSettings) {
     return new Promise((resolve, reject) => {
       // 获取组件实例对象
-      function getRef(ref) {
-        resolve(ref)
-      }
       try {
         let ele = document.getElementById(gab.id)
         if (ele) {
@@ -33,7 +30,7 @@ export class ValueComponent extends GaugeBaseComponent {
           // 找到Switch Dom
           if (htmlValue) {
             const elementRef = React.createRef()
-            const element = React.createElement(IotValue, { ref: (ref) => getRef(ref) })
+            const element = React.createElement(IotValue, { ref: (ref) => resolve(ref) })
             ReactDOM.createRoot(htmlValue).render(element)
     
             return elementRef;
