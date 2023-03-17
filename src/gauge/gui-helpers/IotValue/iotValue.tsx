@@ -8,7 +8,7 @@ export class IotValue extends React.Component {
   render(): React.ReactNode {
     return (
       <div>
-
+        11
       </div>
     )
   }

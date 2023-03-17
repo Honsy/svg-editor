@@ -4,6 +4,7 @@ const name = 'value';
 export default {
   name,
   async init (l) {
+    console.warn('lllllllllllll',l, this)
     const svgEditor = this
     const { svgCanvas } = svgEditor
     const mode = "value";
@@ -40,7 +41,7 @@ export default {
               type: "text",
               content: "##.##",
               attr: {
-                id: svgCanvas.getNextId().replace("svg_", p)
+                id: svgCanvas.getNextId().replace("svg_", prefixId)
               }
             }]
           }
@@ -52,7 +53,7 @@ export default {
             style: "pointer-events:none"
           }
 
-          for (let index; index < elements.elements.length; index++) {
+          for (let index = 0; index < elements.elements.length; index++) {
             const element = elements.elements[index];
             $.extend(element.attr, svgProperty)
           }

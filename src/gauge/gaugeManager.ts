@@ -30,9 +30,17 @@ export class GaugesManager {
     if (ga.type.startsWith(HtmlChartComponent.TypeTag)) {
 
     } else if(ga.type.startsWith(HtmlSwitchComponent.TypeTag)) {
-      let gauge = HtmlSwitchComponent.initElement(ga);
+      let gauge = await HtmlSwitchComponent.initElement(ga).catch((err) => {
+        return err
+      });
       this.mapGauges[ga.id] = gauge
       return gauge
+    } else if (ga.type.startsWith(ValueComponent.TypeTag)) {
+       let gauge = await ValueComponent.initElement(ga).catch((err) => {
+         return err
+       })
+       this.mapGauges[ga.id] = gauge
+       return gauge
     }
   }
 

@@ -204,12 +204,12 @@ export default class ConfigObj {
       * @type {string[]}
     */
     this.defaultExtensions = [
-      // 'ext-connector',
+      'ext-connector',
       'ext-eyedropper',
       'ext-grid',
       // 'ext-imagelib',
       // 'ext-arrows',
-      'ext-markers',
+      // 'ext-markers',
       // 'ext-overview_window', disabled until we fix performance issue
       'ext-panning',
       'ext-shapes',
@@ -218,7 +218,15 @@ export default class ConfigObj {
       'ext-html_input',
       'ext-html_switch',
       'ext-html_select',
-      'ext-value'
+      'ext-value',
+      'ext-gauge_semaphore',
+      'ext-html_slider',
+      'ext-pipe',
+      'ext-gauge_progress',
+      'ext-html_chart',
+      'ext-html_bag',
+      'ext-html_graph',
+      'ext-own_ctrl',
       // 'ext-opensave'
     ]
     this.curConfig = {
