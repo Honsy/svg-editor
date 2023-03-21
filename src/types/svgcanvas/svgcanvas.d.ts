@@ -1,6 +1,6 @@
 import { Drawing } from "./draw";
 
-declare module '@svgedit/svgcanvas' {
+declare module '@/packages/svgcanvas/svgcanvas' {
     export default SvgCanvas;
     /**
      * The main SvgCanvas class that manages all SVG-related functions.

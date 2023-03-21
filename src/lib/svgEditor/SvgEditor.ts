@@ -1,11 +1,11 @@
 import ConfigObj from './ConfigObj'
 import { SvgEditorStartup } from './SvgEditorStartup'
-import { isMac } from '@svgedit/svgcanvas/common/browser'
+import { isMac } from '@/packages/svgcanvas/common/browser'
 import { isValidUnit } from '@svgedit/svgcanvas/core/units'
-import { assignAttributes, cleanupElement, getElement, init } from '@svgedit/svgcanvas/core/utilities'
+import { assignAttributes, cleanupElement, getElement, init } from '@/packages/svgcanvas/core/utilities'
 
-import SvgCanvas from '@svgedit/svgcanvas'
-import { NS } from '@svgedit/svgcanvas/core/namespaces'
+import SvgCanvas from '@/packages/svgcanvas/svgcanvas'
+import { NS } from '@/packages/svgcanvas/core/namespaces'
 import { merge } from 'lodash'
 import { emitter } from './utils/event'
 

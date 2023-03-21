@@ -13,6 +13,9 @@ declare global {
     widget: any;
   }
 
+  interface HTMLElement {
+    value: any
+  }
   interface Element {
     pathSegList: any
     createSVGPathSegLinetoAbs: any
