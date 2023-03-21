@@ -56,7 +56,7 @@ export default {
             }]
           }
           let c = svgCanvas.getNextId().replace("svg_", prefixId)
-          svgElement = svgEditor.addSvgGroupFromJson({
+          svgElement = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: c,
             type: classId,

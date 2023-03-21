@@ -11,8 +11,9 @@
 export default {
   name: 'connector',
   async init (S) {
+    console.log($)
     const svgEditor = this;
-    const svgCanvas = svgEditor.canvas;
+    const svgCanvas = svgEditor.svgCanvas;
     const {getElem} = svgCanvas;
     const {$, svgroot, importLocale} = S,
       addElem = svgCanvas.addSVGElementFromJson,

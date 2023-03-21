@@ -27,7 +27,8 @@ import { init as eventInit } from './core/event.js'
 import {
   init as jsonInit,
   getJsonFromSvgElements,
-  addSVGElementsFromJson
+  addSVGElementsFromJson,
+  addSvgGroupFromJson
 } from './core/json.js'
 import * as elemGetSet from './core/elem-get-set.js'
 import { init as selectedElemInit } from './core/selected-elem.js'
@@ -111,34 +112,16 @@ const CLIPBOARD_ID = 'svgedit_clipboard'
  *
  */
 class SvgCanvas {
-  cycleElement(arg0) {
-    throw new Error('Method not implemented.')
-  }
-  cloneSelectedElements(arg0, arg1) {
-    throw new Error('Method not implemented.')
-  }
-  deleteSelectedElements // pointer to current group (for in-group editing)
-    () {
-    throw new Error('Method not implemented.')
-  }
-  setSvgString(str) {
-    return false
-  }
-  getResolution() {
-    return {}
-  }
-  setCurrentZoom(multiplier) {
-    throw new Error('Method not implemented.')
-  }
-  updateCanvas(w, h) {
-    return {}
-  }
-  setResolution(width, height) {
-    throw new Error('Method not implemented.')
-  }
-  setBackground(bkColor, url) {
-    throw new Error('Method not implemented.')
-  }
+  getMouseTarget(e) {return {}}
+  cycleElement(arg0) {}
+  cloneSelectedElements(arg0, arg1) {}
+  deleteSelectedElements() { }
+  setSvgString(str) {return false}
+  getResolution() {return {}}
+  setCurrentZoom(multiplier) {throw new Error('Method not implemented.')}
+  updateCanvas(w, h) {return {}}
+  setResolution(width, height) {throw new Error('Method not implemented.')}
+  setBackground(bkColor, url) {throw new Error('Method not implemented.')}
   /**
    * @param {HTMLElement} container - The container HTML element that should hold the SVG root element
    * @param {module:SVGeditor.configObj.curConfig} config - An object that contains configuration data
@@ -336,6 +319,7 @@ class SvgCanvas {
     this.contentW = this.getResolution().w
     this.contentH = this.getResolution().h
     this.clear()
+    this.spaceKey = undefined
   } // End constructor
 
   getSvgOption () {
@@ -1298,6 +1282,7 @@ class SvgCanvas {
   initializeSvgCanvasMethods () {
     this.getJsonFromSvgElements = getJsonFromSvgElements
     this.addSVGElementsFromJson = addSVGElementsFromJson
+    this.addSvgGroupFromJson = addSvgGroupFromJson
     this.clearSvgContentElement = clearSvgContentElementInit
     this.textActions = textActionsMethod
     this.getStrokedBBox = getStrokedBBoxDefaultVisible

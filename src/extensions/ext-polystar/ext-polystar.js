@@ -33,7 +33,7 @@ export default {
     let selElems
     let started
     let newFO
-    await loadExtensionTranslation(svgEditor)
+    // await loadExtensionTranslation(svgEditor)
 
     /**
      * @param {boolean} on true=display
@@ -72,7 +72,7 @@ export default {
     const sec = (n) => 1 / Math.cos(n)
 
     return {
-      name: svgEditor.i18next.t(`${name}:name`),
+      name: `${name}`,
       // The callback should be used to load the DOM with the appropriate UI items
       callback () {
         // Add the button and its handler(s)

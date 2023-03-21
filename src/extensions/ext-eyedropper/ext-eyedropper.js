@@ -27,7 +27,7 @@ export default {
   async init () {
     const svgEditor = this
     const { svgCanvas } = svgEditor
-    await loadExtensionTranslation(svgEditor)
+    // await loadExtensionTranslation(svgEditor)
     const { ChangeElementCommand } = svgCanvas.history
     // svgdoc = S.svgroot.parentNode.ownerDocument,
     const addToHistory = (cmd) => { svgCanvas.undoMgr.addCommandToHistory(cmd) }
@@ -79,11 +79,11 @@ export default {
     }
 
     return {
-      name: svgEditor.i18next.t(`${name}:name`),
+      name: `eyedropper`,
       callback () {
         // Add the button and its handler(s)
-        const title = `${name}:buttons.0.title`
-        const key = `${name}:buttons.0.key`
+        const title = `Eye Dropper Tool`
+        const key = `I`
         const buttonTemplate = `
         <se-button id="tool_eyedropper" title="${title}" src="eye_dropper.svg" shortcut=${key}></se-button>
         `

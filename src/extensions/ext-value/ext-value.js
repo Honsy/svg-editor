@@ -4,7 +4,6 @@ const name = 'value';
 export default {
   name,
   async init (l) {
-    console.warn('lllllllllllll',l, this)
     const svgEditor = this
     const { svgCanvas } = svgEditor
     const mode = "value";
@@ -63,7 +62,7 @@ export default {
           t.y = startY
           let c = svgCanvas.getNextId().replace("svg_", prefixId)
 
-          svgElement = svgEditor.addSvgGroupFromJson({
+          svgElement = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: c,
             type: classId,

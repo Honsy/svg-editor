@@ -70,8 +70,8 @@ export default {
                 }
               }]
           }
-          let warpId = arg.getNextId().replace("svg_", prefixId)
-          svgElement = arg.addSvgGroupFromJson({
+          let warpId = svgCanvas.getNextId().replace("svg_", prefixId)
+          svgElement = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: warpId,
             type: classId,

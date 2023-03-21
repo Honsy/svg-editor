@@ -952,6 +952,7 @@ const dblClickEvent = (evt) => {
  * @returns {void}
  */
 const mouseDownEvent = (evt) => {
+  console.log('mouseDownEvent')
   const dataStorage = svgCanvas.getDataStorage()
   const selectedElements = svgCanvas.getSelectedElements()
   const zoom = svgCanvas.getZoom()

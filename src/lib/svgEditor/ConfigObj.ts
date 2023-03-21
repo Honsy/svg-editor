@@ -205,7 +205,7 @@ export default class ConfigObj {
     */
     this.defaultExtensions = [
       // 'ext-connector',
-      // 'ext-eyedropper',
+      'ext-eyedropper',
       'ext-grid',
       // 'ext-imagelib',
       // 'ext-arrows',
@@ -213,7 +213,7 @@ export default class ConfigObj {
       // 'ext-overview_window', disabled until we fix performance issue
       'ext-panning',
       'ext-shapes',
-      'ext-polystar',
+      // 'ext-polystar',
       'ext-html_button',
       'ext-html_input',
       'ext-html_switch',

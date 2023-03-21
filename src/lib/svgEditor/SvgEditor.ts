@@ -13,7 +13,9 @@ const { $id, $click, decode64, blankPageObjectURL } = SvgCanvas
 
 export class SvgEditor extends SvgEditorStartup {
   currentMode: string
-  lastClickPoint: number
+  lastClickPoint: any
+  current_mode: string
+  current_resize_mode: any
   loadFromDataURI(source: any) {
     throw new Error('Method not implemented.')
   }
@@ -593,90 +595,90 @@ export class SvgEditor extends SvgEditorStartup {
     return this.svgCanvas.addExtension(name, initfn, initArgs)
   }
 
-  addSvgGroupFromJson(e) {
-    let shape = this.shapeProperty.shape;
-    let element = getElement(e.id)
-    const layer = this.svgCanvas.current_drawing_.getCurrentLayer()
-    if (element && e.group != element.tagName) {
-      // this.svgCanvas.
-      element = null
-    }
-    element = this.$container.ownerDocument.createElementNS(NS.SVG, e.group)
-    element.setAttribute('id', e.id)
-    element.setAttribute('type', e.type)
-    console.log(element, layer, e)
-    if (layer) {
-      layer.appendChild(element)
-    }
+  // addSvgGroupFromJson(e) {
+  //   let shape = this.shapeProperty.shape;
+  //   let element = getElement(e.id)
+  //   const layer = this.svgCanvas.current_drawing_.getCurrentLayer()
+  //   if (element && e.group != element.tagName) {
+  //     // this.svgCanvas.
+  //     element = null
+  //   }
+  //   element = this.$container.ownerDocument.createElementNS(NS.SVG, e.group)
+  //   element.setAttribute('id', e.id)
+  //   element.setAttribute('type', e.type)
+  //   console.log(element, layer, e)
+  //   if (layer) {
+  //     layer.appendChild(element)
+  //   }
 
-    for (let index = 0; index < e.elements.length; index++) {
-      const elementConfig = e.elements[index]
-      let newElement = document.createElementNS(NS.SVG, elementConfig.type)
-      assignAttributes(
-        newElement,
-        {
-          'stroke-width': shape.stroke_width,
-          'stroke-dasharray': shape.stroke_dasharray,
-          'stroke-linejoin': shape.stroke_linejoin,
-          'stroke-linecap': shape.stroke_linecap,
-          style: 'pointer-events:inherit'
-        },
-        100
-      )
-      assignAttributes(newElement, elementConfig.attr)
-      console.warn('aaapend11', elementConfig.attr)
+  //   for (let index = 0; index < e.elements.length; index++) {
+  //     const elementConfig = e.elements[index]
+  //     let newElement = document.createElementNS(NS.SVG, elementConfig.type)
+  //     assignAttributes(
+  //       newElement,
+  //       {
+  //         'stroke-width': shape.stroke_width,
+  //         'stroke-dasharray': shape.stroke_dasharray,
+  //         'stroke-linejoin': shape.stroke_linejoin,
+  //         'stroke-linecap': shape.stroke_linecap,
+  //         style: 'pointer-events:inherit'
+  //       },
+  //       100
+  //     )
+  //     assignAttributes(newElement, elementConfig.attr)
+  //     console.warn('aaapend11', elementConfig.attr)
 
-      if (elementConfig.type === 'text') {
-        newElement.textContent = elementConfig.content
-      } else if (elementConfig.type === 'foreignObject') {
-        let content = elementConfig.content
-        if (content) {
-          for (let sIndex = 0; sIndex < content.length; sIndex++) {
-            const contentJSON = content[sIndex]
-            const contentElement = document.createElement(contentJSON.tag)
-            if (contentElement.tagName.toLowerCase() === 'select') {
-              const optionsElement = document.createElement('option')
-              optionsElement.setAttribute('test', ' ')
-              contentElement.appendChild(optionsElement)
-            } else if (contentElement.tagName.toLowerCase() === 'button') {
-              contentElement.innerHTML = 'button'
-            } else if (contentElement.tagName.toLowerCase() === 'span') {
-              contentJSON.value && (contentElement.innerHTML = contentJSON.value)
-              contentJSON.attr && assignAttributes(contentElement, contentJSON.attr)
-            }
-            assignAttributes(contentElement, contentJSON.attr)
-            contentJSON.style && contentElement.setAttribute('style', contentJSON.style)
-            if (contentElement.tagName.toLowerCase() === 'input') {
-              contentElement.style.backgroundColor = shape.fill
-              contentElement.style.color = shape.stroke
-            }
-            newElement.appendChild(contentElement)
-          }
-        }
-      }
-      element.appendChild(newElement)
-    }
+  //     if (elementConfig.type === 'text') {
+  //       newElement.textContent = elementConfig.content
+  //     } else if (elementConfig.type === 'foreignObject') {
+  //       let content = elementConfig.content
+  //       if (content) {
+  //         for (let sIndex = 0; sIndex < content.length; sIndex++) {
+  //           const contentJSON = content[sIndex]
+  //           const contentElement = document.createElement(contentJSON.tag)
+  //           if (contentElement.tagName.toLowerCase() === 'select') {
+  //             const optionsElement = document.createElement('option')
+  //             optionsElement.setAttribute('test', ' ')
+  //             contentElement.appendChild(optionsElement)
+  //           } else if (contentElement.tagName.toLowerCase() === 'button') {
+  //             contentElement.innerHTML = 'button'
+  //           } else if (contentElement.tagName.toLowerCase() === 'span') {
+  //             contentJSON.value && (contentElement.innerHTML = contentJSON.value)
+  //             contentJSON.attr && assignAttributes(contentElement, contentJSON.attr)
+  //           }
+  //           assignAttributes(contentElement, contentJSON.attr)
+  //           contentJSON.style && contentElement.setAttribute('style', contentJSON.style)
+  //           if (contentElement.tagName.toLowerCase() === 'input') {
+  //             contentElement.style.backgroundColor = shape.fill
+  //             contentElement.style.color = shape.stroke
+  //           }
+  //           newElement.appendChild(contentElement)
+  //         }
+  //       }
+  //     }
+  //     element.appendChild(newElement)
+  //   }
 
-    if (e.curStyles) {
-      assignAttributes(element, {
-        fill: shape.fill,
-        stroke: shape.stroke,
-        "stroke-width": shape.stroke_width,
-        "stroke-dasharray": shape.stroke_dasharray,
-        "stroke-linejoin": shape.stroke_linejoin,
-        "stroke-linecap": shape.stroke_linecap,
-        style: "pointer-events:inherit"
-    }, 100)
-    }
-    assignAttributes(element,  e.attr, 100);
-    cleanupElement(element)
-    // 
-    this.emitter.emit('onGaugeAdded', {
-      id: e.id,
-      type: e.type
-    })
-    return element
-  }
+  //   if (e.curStyles) {
+  //     assignAttributes(element, {
+  //       fill: shape.fill,
+  //       stroke: shape.stroke,
+  //       "stroke-width": shape.stroke_width,
+  //       "stroke-dasharray": shape.stroke_dasharray,
+  //       "stroke-linejoin": shape.stroke_linejoin,
+  //       "stroke-linecap": shape.stroke_linecap,
+  //       style: "pointer-events:inherit"
+  //   }, 100)
+  //   }
+  //   assignAttributes(element,  e.attr, 100);
+  //   cleanupElement(element)
+  //   // 
+  //   this.emitter.emit('onGaugeAdded', {
+  //     id: e.id,
+  //     type: e.type
+  //   })
+  //   return element
+  // }
   /**
    *
    * @param {Event} e

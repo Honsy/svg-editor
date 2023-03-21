@@ -28,7 +28,7 @@ export default {
   name,
   async init () {
     const svgEditor = this
-    await loadExtensionTranslation(svgEditor)
+    // await loadExtensionTranslation(svgEditor)
     const {
       svgCanvas
     } = svgEditor
@@ -37,7 +37,7 @@ export default {
       referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling)
     }
     return {
-      name: svgEditor.i18next.t(`${name}:name`),
+      name: "Extension Panning",
       callback () {
         const btitle = `${name}:buttons.0.title`
         // Add the button and its handler(s)

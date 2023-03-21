@@ -334,11 +334,11 @@ export default class Designer implements DesignerEventEmitter {
       this.clearSelection()
       this.checkFillAndStrokeColor()
     }
-    window.svgEditor.clickToSetMode(mode)
+    this.editor.clickToSetMode(mode)
   }
 
   clearSelection() {
-    window.svgEditor.clearSelection()
+    this.editor.clearSelection()
   }
 
   /**

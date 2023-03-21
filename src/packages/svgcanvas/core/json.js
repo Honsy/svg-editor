@@ -7,6 +7,7 @@
  */
 import { getElement, assignAttributes, cleanupElement } from './utilities.js'
 import { NS } from './namespaces.js'
+import { svgEmitter } from '../common/emiiter.js'
 
 let svgCanvas = null
 let svgdoc_ = null
@@ -106,5 +107,90 @@ export const addSVGElementsFromJson = (data) => {
     })
   }
 
+  return shape
+}
+
+export const addSvgGroupFromJson = (data) => {
+  let shape = getElement(data.id)
+  const currentLayer = svgCanvas.getDrawing().getCurrentLayer()
+  if (shape && data.group != shape.tagName) {
+    // this.svgCanvas.
+    shape = null
+  }
+
+  const ns = data.namespace || NS.SVG
+  shape = svgdoc_.createElementNS(ns, data.group)
+  shape.setAttribute('id', data.id)
+  shape.setAttribute('type', data.type)
+  if (currentLayer) {
+    (svgCanvas.getCurrentGroup() || currentLayer).append(shape)
+  }
+
+  const curShape = svgCanvas.getCurShape()
+  for (let index = 0; index < data.elements.length; index++) {
+    const elementConfig = data.elements[index]
+    let newElement = svgdoc_.createElementNS(NS.SVG, elementConfig.type)
+    assignAttributes(
+      newElement,
+      {
+        'stroke-width': curShape.stroke_width,
+        'stroke-dasharray': curShape.stroke_dasharray,
+        'stroke-linejoin': curShape.stroke_linejoin,
+        'stroke-linecap': curShape.stroke_linecap,
+        style: 'pointer-events:inherit'
+      },
+      100
+    )
+    assignAttributes(newElement, elementConfig.attr)
+    if (elementConfig.type === 'text') {
+      newElement.textContent = elementConfig.content
+    } else if (elementConfig.type === 'foreignObject') {
+      let content = elementConfig.content
+      if (content) {
+        for (let sIndex = 0; sIndex < content.length; sIndex++) {
+          const contentJSON = content[sIndex]
+          const contentElement = document.createElement(contentJSON.tag)
+          if (contentElement.tagName.toLowerCase() === 'select') {
+            const optionsElement = document.createElement('option')
+            optionsElement.setAttribute('test', ' ')
+            contentElement.appendChild(optionsElement)
+          } else if (contentElement.tagName.toLowerCase() === 'button') {
+            contentElement.innerHTML = 'button'
+          } else if (contentElement.tagName.toLowerCase() === 'span') {
+            contentJSON.value && (contentElement.innerHTML = contentJSON.value)
+            contentJSON.attr && assignAttributes(contentElement, contentJSON.attr)
+          }
+          assignAttributes(contentElement, contentJSON.attr)
+          contentJSON.style && contentElement.setAttribute('style', contentJSON.style)
+          if (contentElement.tagName.toLowerCase() === 'input') {
+            contentElement.style.backgroundColor = shape.fill
+            contentElement.style.color = shape.stroke
+          }
+          newElement.appendChild(contentElement)
+        }
+      }
+    }
+    shape.appendChild(newElement)
+  }
+
+  if (data.curStyles) {
+    assignAttributes(element, {
+      fill: curShape.fill,
+      stroke: curShape.stroke,
+      "stroke-width": curShape.stroke_width,
+      "stroke-dasharray": curShape.stroke_dasharray,
+      "stroke-linejoin": curShape.stroke_linejoin,
+      "stroke-linecap": curShape.stroke_linecap,
+      style: "pointer-events:inherit"
+  }, 100)
+  }
+  assignAttributes(shape,  data.attr, 100);
+  cleanupElement(shape)
+  svgEmitter.emit('onGaugeAdded', {
+    id: data.id,
+    type: data.type
+  })
+
+  console.log(shape)
   return shape
 }

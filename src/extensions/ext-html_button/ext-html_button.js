@@ -1,6 +1,7 @@
 
 const name = 'html_button';
 
+
 export default {
   name,
   async init (l) {
@@ -12,6 +13,7 @@ export default {
     const classId = "svg-ext-" + mode;
     const prefixId = "HXB_";
     const t = {};
+    let svgElement = null;
     return {
       callback: function () {
         $("#html_button_panel").hide()
@@ -57,7 +59,7 @@ export default {
             }]
           }
           let c = svgCanvas.getNextId().replace("svg_", prefixId)
-          let g = svgEditor.addSvgGroupFromJson({
+          svgElement = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: c,
             type: classId,
@@ -77,7 +79,7 @@ export default {
       mouseUp: function (e) {
         if (svgCanvas.getMode() === mode) return {
           keep: e.event.clientX != t.x && e.event.clientY != t.y,
-          element: g,
+          element: svgElement,
           started: false
         }
       },

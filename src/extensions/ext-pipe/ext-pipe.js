@@ -64,7 +64,7 @@ export default {
             "xml:space": "preserve"
           },{
             keep: true,
-            element: svgEditor.addSvgGroupFromJson({
+            element: svgCanvas.addSvgGroupFromJson({
               group: "g",
               id: nextId,
               type: classId,

@@ -25,7 +25,7 @@ export default {
   name,
   async init () {
     const svgEditor = this
-    await loadExtensionTranslation(svgEditor)
+    // await loadExtensionTranslation(svgEditor)
     const { svgCanvas } = svgEditor
     const { $id, $click, NS } = svgCanvas
     const svgdoc = $id('svgcanvas').ownerDocument
@@ -153,7 +153,7 @@ export default {
       $id('view_grid').pressed = showGrid
     }
     return {
-      name: svgEditor.i18next.t(`${name}:name`),
+      name: `gird`,
       zoomChanged (zoom) {
         if (showGrid) { updateGrid(zoom) }
       },

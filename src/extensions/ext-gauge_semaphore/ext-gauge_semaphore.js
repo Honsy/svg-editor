@@ -59,7 +59,7 @@ export default {
           t.x = startX
           t.y = startY
           let c = svgCanvas.getNextId().replace("svg_", prefixId)
-          let g = svgEditor.addSvgGroupFromJson({
+          let g = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: c,
             type: classId,

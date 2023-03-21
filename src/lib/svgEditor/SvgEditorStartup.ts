@@ -1,5 +1,5 @@
-import SvgCanvas from '@svgedit/svgcanvas'
-import { init } from '@svgedit/svgcanvas/core/utilities'
+import SvgCanvas from '@/packages/svgcanvas/svgcanvas'
+import { init } from '@/packages/svgcanvas/core/utilities'
 import { BaseEditorStartup } from './../base/BaseEditorStartup'
 import ConfigObj from './ConfigObj'
 import Rulers from './Rulers'
@@ -21,6 +21,9 @@ export class SvgEditorStartup extends BaseEditorStartup {
   $svgEditor: any
   storagePromptState: any
   shapeProperty: any  
+  scale: number
+  S: any[]
+  started: boolean
   /**
    *
    */
@@ -40,6 +43,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
     if ('localStorage' in window) {
       this.storage = window.localStorage
     }
+    this.scale = 1;
     this.configObj.load()
     this.shapeProperty = {
       shape: {
@@ -63,6 +67,8 @@ export class SvgEditorStartup extends BaseEditorStartup {
       font_family: 'sans-serif',
       text_anchor: 'middle'
     })
+    this.S = new Array(1);
+    this.started = false;
     // await import('./components/index.js')
     // await import('./dialogs/index.js')
     try {

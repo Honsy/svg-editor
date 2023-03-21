@@ -330,6 +330,7 @@ export const pathActionsMethod = (function () {
     * @returns {boolean|void}
     */
     mouseDown (evt, mouseTarget, startX, startY) {
+      console.log(svgCanvas.getCurrentMode() === 'pipe')
       let id
       if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
         let mouseX = startX // Was this meant to work with the other `mouseX`? (was defined globally so adding `let` to at least avoid a global)
