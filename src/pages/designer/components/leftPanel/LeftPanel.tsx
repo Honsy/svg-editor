@@ -83,7 +83,7 @@ const LeftPanel: React.FC<ILeftPanelProp> = ({ }) => {
           )
         }
       </div>
-      <Collapse defaultActiveKey={['1']}>
+      <Collapse defaultActiveKey={['1', '2', '3']}>
         <Panel header="通用组件" key="2">
           <div className="iv-panel-block">
             {generals.map((item) => {
