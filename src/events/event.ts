@@ -1,4 +1,4 @@
-import { EditorAddView, EditorData, EditorHmiData, EditorPointData, EditorSelectView, ErrorData } from "./event.data";
+import { EditorAddView, EditorData, EditorHmiData, EditorPointData, EditorSelectElement, EditorSelectView, ErrorData } from "./event.data";
 
 /**
  * @readonly
@@ -22,6 +22,7 @@ export enum Events {
   EDITOR_HMI_LOADED = 'iotEditorHmiLoaded', // HMI数据已经加载
   EDITOR_ADD_VIEW = 'iotEditorAddView', // 新增视图通知
   EDITOR_SELECT_VIEW = 'iotEditorSelectView', // 视图选中通知
+  EDITOR_SELECT_ELEMENT = 'iotEditorSelectElement', // 节点选中变化通知
   DIALOG_SELECT_POINT = 'iotDialogSelectPoint', // 弹框选取点位
   ERROR = 'iotError' // 发生错误
 }
@@ -47,6 +48,10 @@ export interface DesignerListeners {
     event: Events.EDITOR_SELECT_VIEW,
     data: EditorSelectView
   ) => void;
+  [Events.EDITOR_SELECT_ELEMENT]: (
+    event: Events.EDITOR_SELECT_ELEMENT,
+    data: EditorSelectElement
+  ) => void;
   [Events.DIALOG_SELECT_POINT]: (
     event: Events.DIALOG_SELECT_POINT,
     data: EditorPointData
@@ -55,6 +60,7 @@ export interface DesignerListeners {
     event: Events.ERROR, 
     data: ErrorData
   ) => void;
+  
 }
 export interface DesignerEventEmitter {
   on<E extends keyof DesignerListeners, Context = undefined>(

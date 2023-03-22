@@ -59,7 +59,7 @@ export default class Designer implements DesignerEventEmitter {
     })
     this.editor.emitter.on('onGaugeAdded', this.onGaugeAdded.bind(this))
     // 初始化属性相关
-    this.property = new DesignerProperty(this.editor)
+    this.property = new DesignerProperty(this)
     this.layer = new DesignerLayer(this.editor);
 
     this.layer.populateLayers();
@@ -380,10 +380,13 @@ export default class Designer implements DesignerEventEmitter {
     }, 700)
   }
   getGaugeSettings(ele: any) {
+    console.log('ele', ele, this.currentView)
+
     if (ele && this.currentView) {
       if (this.currentView.items[ele.id]) {
         return this.currentView.items[ele.id]
       }
+      console.log('ele', ele)
       return service.gaugesManager.createSettings(ele.id, ele.type)
     }
     return null

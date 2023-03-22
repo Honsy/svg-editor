@@ -1,6 +1,8 @@
 import Designer from '@/adapter/designer'
 import { Events } from '@/events/event'
+import { EditorSelectElement } from '@/events/event.data'
 import { GaugeBaseComponent } from '@/gauge/gaugeBase'
+import { SelElement } from '@/models/hmi'
 import { Collapse } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { designer } from '../../VizDesigner'
@@ -11,19 +13,12 @@ export interface IRightPanelProp {}
 const RightPanel: React.FC<IRightPanelProp> = ({}) => {
   let gaugepanel
   const [shadow, setShadow] = useState(0)
-  const [selectedElement, setSelectedElement] = useState(null)
-  const handleEditorInit = () => {
-    designer.initPropertyListener()
+  const [selectedElement, setSelectedElement] = useState(new SelElement())
+
+  const onSelectElementChange = (event, data: EditorSelectElement) => {
+    console.log('11232132', data)
+    setSelectedElement(data.selectedElement)
   }
-  console.log('start listener')
-  // designer.on(Events.EDITOR_LOADED, handleEditorInit)
-
-  // 初始化通用属性监听
-  useEffect(() => {
-    handleEditorInit()
-    // designer.on(Events.EDITOR_LOADED, handleEditorInit)
-  }, [])
-
   const onAlignSelected = (letter: string) => {
     designer.editor.alignSelectedElements(letter.charAt(0))
   }
@@ -31,6 +26,13 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
   const getGaugeSettings = () => {}
 
   const onGaugeEdit = () => {}
+
+  // 初始化通用属性监听
+  useEffect(() => {
+    designer.initPropertyListener()
+    designer.on(Events.EDITOR_SELECT_ELEMENT, onSelectElementChange)
+  }, [])
+
   return (
     <div className="iv-rightpanel">
       <Collapse className="iv-collapse" defaultActiveKey={['1', '2', '3', '4', '5']}>

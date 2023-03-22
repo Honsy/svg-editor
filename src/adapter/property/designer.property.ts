@@ -1,11 +1,14 @@
 import { Editor } from '@/lib/editor/editor'
 import SvgCanvas from '@svgedit/svgcanvas'
 import { SvgEditor } from '@/lib/svgEditor/SvgEditor'
+import Designer from '../designer'
+import { Events } from '@/events/event'
 
 const { $qa, $id, $click, isValidUnit, getTypeMap, convertUnit } = SvgCanvas
 
 export default class DesignerProperty {
   editor: SvgEditor
+  designer: Designer
 
   /**
    * @type {module}
@@ -21,8 +24,9 @@ export default class DesignerProperty {
   }
 
 
-  constructor(editor: SvgEditor) {
-    this.editor = editor
+  constructor(designer: Designer) {
+    this.designer = designer;
+    this.editor = designer.editor
     this.editor.svgCanvas.bind('selected', this.selectedChanged.bind(this))
   }
 
@@ -60,7 +64,6 @@ export default class DesignerProperty {
   }
 
   selectedChanged(win: any, elems: any) {
-    console.log('dddd')
     const mode = this.editor.svgCanvas.getMode()
     if (mode === 'select') {
       // this.leftPanel.clickSelect()
@@ -84,6 +87,8 @@ export default class DesignerProperty {
         multiselected: this.editor.multiselected
       }
     )
+    console.log('123213213',win, elems)
+    this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {selectedElement: this.selectedElement, multiselected: this.editor.multiselected})
   }
   // 同步选中节点属性
   updateContextPanel() {

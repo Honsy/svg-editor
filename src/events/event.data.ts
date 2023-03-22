@@ -46,6 +46,12 @@ export interface EditorSelectView {
 }
 
 
+export interface EditorSelectElement {
+  selectedElement?: any 
+  multiselected: boolean
+}
+
+
 export interface ErrorData {
   type: ErrorTypes;
   details: ErrorDetails;
