@@ -10,18 +10,6 @@
 
 const name = 'eyedropper'
 
-const loadExtensionTranslation = async function (svgEditor) {
-  let translationModule
-  const lang = svgEditor.configObj.pref('lang')
-  try {
-    translationModule = await import(`./locale/${lang}.js`)
-  } catch (_error) {
-    console.warn(`Missing translation (${lang}) for ${name} - using 'en'`)
-    translationModule = await import('./locale/en.js')
-  }
-  svgEditor.i18next.addResourceBundle(lang, name, translationModule.default)
-}
-
 export default {
   name,
   async init () {
@@ -54,14 +42,14 @@ export default {
       const mode = svgCanvas.getMode()
       if (mode === 'eyedropper') { return }
 
-      const tool = $id('tool_eyedropper')
+      const tool = $('tool_eyedropper')
       // enable-eye-dropper if one element is selected
       let elem = null
       if (!opts.multiselected && opts.elems[0] &&
         !['svg', 'g', 'use'].includes(opts.elems[0].nodeName)
       ) {
         elem = opts.elems[0]
-        tool.classList.remove('disabled')
+        tool.removeClass('disabled')
         // grab the current style
         currentStyle.fillPaint = elem.getAttribute('fill') || 'black'
         currentStyle.fillOpacity = elem.getAttribute('fill-opacity') || 1.0
@@ -74,27 +62,23 @@ export default {
         currentStyle.opacity = elem.getAttribute('opacity') || 1.0
         // disable eye-dropper tool
       } else {
-        tool.classList.add('disabled')
+        tool.addClass('disabled')
       }
     }
 
     return {
       name: `eyedropper`,
-      callback () {
-        // Add the button and its handler(s)
-        const title = `Eye Dropper Tool`
-        const key = `I`
-        const buttonTemplate = `
-        <se-button id="tool_eyedropper" title="${title}" src="eye_dropper.svg" shortcut=${key}></se-button>
-        `
-        svgCanvas.insertChildAtIndex($id('tools_left'), buttonTemplate, 12)
-        $click($id('tool_eyedropper'), () => {
-          if (this.leftPanel.updateLeftPanel('tool_eyedropper')) {
-            svgCanvas.setMode('eyedropper')
+      buttons: [{
+        id: "tool_eyedropper",
+        type: "mode",
+        title: "Eye Dropper Tool",
+        key: "I",
+        events: {
+          click: function () {
+            svgCanvas.setMode("eyedropper")
           }
-        })
-      },
-      // if we have selected an element, grab its paint and enable the eye dropper button
+        }
+      }],
       selectedChanged: getStyle,
       elementChanged: getStyle,
       mouseDown (opts) {

@@ -13,6 +13,13 @@ export default class DesignerProperty {
   get selectedElement() {
     return this.editor.selectedElement
   }
+  /**
+   * @type {module}
+   */
+  get path () {
+    return this.editor.svgCanvas.pathActions
+  }
+
 
   constructor(editor: SvgEditor) {
     this.editor = editor
@@ -98,16 +105,16 @@ export default class DesignerProperty {
     const isNode = currentMode === 'pathedit' 
 
     $("#selected_panel, #multiselected_panel, #threemoreselected_panel, #g_panel, #rect_panel, #circle_panel,#ellipse_panel, #line_panel, #text_panel, #image_panel, #container_panel, #use_panel, #a_panel, #xy_panel, #marker_panel, #htmlctrl_panel, #tool_stroke, #tool_angle, #shape_panel").hide();
-    console.log($("#selected_panel"))
+    console.log(elem, "elemelem")
     if (elem) {
       const elname = elem.nodeName
-
+      $("#tool_angle").show();
       const angle = this.editor.svgCanvas.getRotationAngle(elem)
-      $id('angle').value = angle
+      $('#angle').val(angle)
 
-      const blurval = this.editor.svgCanvas.getBlur(elem) * 10
-      $id('blur').value = blurval
-
+      const blurval = Number(this.editor.svgCanvas.getBlur(elem)) * 10
+      $('#blur').val(blurval)
+      // $("#blur_slider").slider("option", "value", blurval)
       if (
         this.editor.svgCanvas.addedNew &&
         elname === 'image' &&
@@ -117,38 +124,67 @@ export default class DesignerProperty {
         /* await */ this.promptImgURL({ cancelDeletes: true })
       }
       
-      if (!isNode && currentMode !== 'pathedit') {
-        $("#selected_panel").show();
-        if (['line', 'circle', 'ellipse'].includes(elname)) {
-          $('#selected_panel').hide();
-        } else {
-          let x
-          let y
-  
-          // Get BBox vals for g, polyline and path
-          if (['g', 'polyline', 'path'].includes(elname)) {
-            const bb = this.editor.svgCanvas.getStrokedBBox([elem])
-            if (bb) {
-              ;({ x, y } = bb)
-            }
-          } else {
-            x = elem.getAttribute('x')
-            y = elem.getAttribute('y')
-          }
-  
+      if (currentMode === 'pathedit') {
+        const point = this.path.getNodePoint()
+        $("#tool_add_subpath").removeClass("push_button_pressed").addClass("tool_button")
+        $("#tool_node_delete").toggleClass("disabled", !this.path.canDeleteNodes)
+        if (point) {
+          const segType = $('#seg_type')
           if (unit) {
-            x = convertUnit(x)
-            y = convertUnit(y)
+            point.x = convertUnit(point.x)
+            point.y = convertUnit(point.y)
           }
-          console.log(x, y)
-          $id('selected_x').value = x || 0
-          $id('selected_y').value = y || 0
-          $('#xy_panel').hide();
+          $('#path_node_x').value = point.x
+          $('#path_node_y').value = point.y
+          if (point.type) {
+            segType.value = point.type
+            segType.removeAttribute('disabled')
+          } else {
+            segType.value = 4
+            segType.setAttribute('disabled', 'disabled')
+          }
         }
-      } else {
-
       }
-    
+      $("#selected_panel").show();
+      if (['line', 'circle', 'ellipse'].includes(elname)) {
+        $('#selected_panel').hide();
+      } else {
+        let x
+        let y
+
+        // Get BBox vals for g, polyline and path
+        if (['g', 'polyline', 'path'].includes(elname)) {
+          const bb = this.editor.svgCanvas.getStrokedBBox([elem])
+          if (bb) {
+            ;({ x, y } = bb)
+          }
+        } else {
+          x = elem.getAttribute('x')
+          y = elem.getAttribute('y')
+        }
+
+        if (unit) {
+          x = convertUnit(x)
+          y = convertUnit(y)
+        }
+        elem.getAttribute("width"); 
+        elem.getAttribute("heght")
+        x = Number.parseFloat(x);
+        x = x.toFixed(Number.isInteger(x) ? 0 : 2)
+        y = y.toFixed(Number.isInteger(y) ? 0 : 2)
+        $('#selected_x').val(x || 0)
+        $('#selected_y').val(y || 0)
+        $('#xy_panel').show();
+
+        // if (this.editor.customPrefixIds.indexOf(t.id.substr(0, 4)) >= 0) {
+        // var y = svgedit.utilities.getBBox(t);
+        // e("#htmlctrl_panel").show(), e("#htmlctrl_width").val(y.width || 0), e("#htmlctrl_height").val(y.height || 0)
+        // }
+      }
+      var isImg = ["image", "text", "path", "g", "use"].indexOf(currentMode) === -1;
+      $("#tool_topath").toggle(isImg);
+      $("#tool_reorient").toggle("path" === elname);
+      $("#tool_reorient").toggleClass("disabled", 0 === angle);
       // update contextual tools here
       const panels = {
         g: [],
@@ -170,9 +206,24 @@ export default class DesignerProperty {
         $('#g_panel').show();
       }
 
+      if (tagName === elem.parentNode.tagName) {
+        $(elem).siblings().length
+        $("#a_panel").show();
+        linkHref = this.editor.svgCanvas.getHref(elem.parentNode)
+      }
+      $("#tool_make_link, #tool_make_link").toggle(!linkHref), 
+      linkHref && $("#link_url").val(linkHref)
+
+      let S = false;
+
       if (panels[tagName]) {
         const curPanel = panels[tagName]
-        $(`#${tagName}_panel`).show();
+        const type = elem.getAttribute("type");
+        if (type && type.indexOf("svg-ext") === 0) {
+          S = true;
+        } else {
+          $("#" + tagName + "_panel").show()
+        }
         curPanel.forEach(item => {
           let attrVal = elem.getAttribute(item)
           if (this.editor.configObj.curConfig.baseUnit !== 'px' && elem[item]) {
@@ -181,6 +232,17 @@ export default class DesignerProperty {
           }
           $id(`${tagName}_${item}`).value = attrVal || 0
         })
+
+        // var A = "g" === x && f.indexOf(t.id.substr(0, 4)) >= 0;
+        // if ("text" == x || A) {
+        //     if (e("#text_panel").css("display", "inline"), u.getItalic() ? e("#tool_italic").addClass("push_button_pressed").removeClass("tool_button") : e("#tool_italic").removeClass("push_button_pressed").addClass("tool_button"), u.getBold() ? e("#tool_bold").addClass("push_button_pressed").removeClass("tool_button") : e("#tool_bold").removeClass("push_button_pressed").addClass("tool_button"), e("#font_family").val(t.getAttribute("font-family")), e("#font_size").val(t.getAttribute("font-size")), e("#text_anchor").val(t.getAttribute("text-anchor")), A) {
+        //         var L = u.getExtensionFont(t);
+        //         L && (L.fontFamily && e("#font_family").val(L.fontFamily), L.fontSize && e("#font_size").val(L.fontSize.replace("px", "")), L.textAnchor && e("#text_anchor").val(L.textAnchor))
+        //     }
+        //     e("#text").val(t.textContent), u.addedNew && !A && setTimeout(function () {
+        //         e("#text").focus().select()
+        //     }, 100)
+        // } else "image" == x ? he(u.getHref(t)) : "g" === x || "use" === x ? (e("#container_panel").show(), u.getTitle()) : "line" === x && e("#marker_panel").show()
       }
     }
   }
@@ -236,7 +298,7 @@ export default class DesignerProperty {
       }
     }
 
-    this.editor.svgCanvas.changeSelectedAttribute(attr, val)
+    this.editor.svgCanvas.changeSelectedAttribute(attr, val, null)
     return true
   }
 }

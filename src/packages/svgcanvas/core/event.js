@@ -1269,6 +1269,7 @@ const mouseDownEvent = (evt) => {
       })
       // newText.textContent = 'text';
       break
+    case 'pipe':
     case 'path':
     // Fall through
     case 'pathedit':

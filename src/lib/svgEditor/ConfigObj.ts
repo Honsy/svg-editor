@@ -214,6 +214,7 @@ export default class ConfigObj {
       'ext-panning',
       'ext-shapes',
       // 'ext-polystar',
+      'ext-linear',
       'ext-html_button',
       'ext-html_input',
       'ext-html_switch',

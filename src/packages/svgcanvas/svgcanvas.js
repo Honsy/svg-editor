@@ -112,6 +112,10 @@ const CLIPBOARD_ID = 'svgedit_clipboard'
  *
  */
 class SvgCanvas {
+  setStrokeAttr(arg0, r) {}
+  alignSelectedElements(letter) {}
+  clearSelection() {}
+  runExtensions(arg0, arg1) {}
   getMouseTarget(e) {return {}}
   cycleElement(arg0) {}
   cloneSelectedElements(arg0, arg1) {}
@@ -320,6 +324,7 @@ class SvgCanvas {
     this.contentH = this.getResolution().h
     this.clear()
     this.spaceKey = undefined
+    this.addedNew = undefined
   } // End constructor
 
   getSvgOption () {
