@@ -67,6 +67,7 @@ export default class DesignerProperty {
     const mode = this.editor.svgCanvas.getMode()
     if (mode === 'select') {
       // this.leftPanel.clickSelect()
+      this.designer.updateSelect();
     }
     const isNode = mode === 'pathedit'
     // if this.elems[1] is present, then we have more than one element
@@ -87,7 +88,6 @@ export default class DesignerProperty {
         multiselected: this.editor.multiselected
       }
     )
-    console.log('123213213',win, elems)
     this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {selectedElement: this.selectedElement, multiselected: this.editor.multiselected})
   }
   // 同步选中节点属性

@@ -440,7 +440,19 @@ export class SvgEditor extends SvgEditorStartup {
     }
     this.updateWireFrame()
   }
-  setColor(color, alfa, type) {}
+  // setColor(color, alfa, type) {
+  //   // svgCanvas.setColor(type, 'url(#' + grad.id + ')')
+  //   this.svgCanvas.setColor(color, alfa, type)
+  // }
+  setColor(color, alfa, type) {
+    var paint = {
+        alpha: alfa,
+        solidColor: color,
+        type: "solidColor"
+    };
+    this.paintBoxs[type].setPaint(paint);
+    this.svgCanvas.setPaint(type, paint)
+  }
   setDocProperty(name, width, height, bkColor) {
     const widthFlag = !(width != 'fit' && !isValidUnit('width', width))
     const heightFlag = !(height != 'fit' && !isValidUnit('height', height))

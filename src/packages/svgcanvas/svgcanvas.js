@@ -112,9 +112,11 @@ const CLIPBOARD_ID = 'svgedit_clipboard'
  *
  */
 class SvgCanvas {
+  setPaint(type, paint) {}
+  setColor(color, alfa, type) {}
   setStrokeAttr(arg0, r) {}
   alignSelectedElements(letter) {}
-  clearSelection() {}
+  clearSelection() {console.log('clearSelectionMethod')}
   runExtensions(arg0, arg1) {}
   getMouseTarget(e) {return {}}
   cycleElement(arg0) {}

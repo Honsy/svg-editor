@@ -47,6 +47,7 @@ export const init = (canvas) => {
  * @fires module:selection.SvgCanvas#event:selected
  */
 const clearSelectionMethod = (noCall) => {
+  console.log('clearSelectionMethod')
   const selectedElements = svgCanvas.getSelectedElements()
   selectedElements.forEach((elem) => {
     if (!elem) {

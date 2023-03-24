@@ -705,6 +705,7 @@ export const pathActionsMethod = (function () {
     * @returns {module:path.keepElement|void}
     */
     mouseUp (evt, element, _mouseX, _mouseY) {
+      console.warn('pathAction', element)
       const drawnPath = svgCanvas.getDrawnPath()
       // Create mode
       if (svgCanvas.getCurrentMode() === 'path') {
@@ -714,7 +715,7 @@ export const pathActionsMethod = (function () {
           svgCanvas.setStarted(false)
           firstCtrl = null
         }
-
+        console.warn('pathAction element', element, 'drawnPath',drawnPath, svgCanvas.getId(), getElement(svgCanvas.getId()))
         return {
           keep: true,
           element
@@ -853,6 +854,7 @@ export const pathActionsMethod = (function () {
     clear () {
       const drawnPath = svgCanvas.getDrawnPath()
       currentPath = null
+
       if (drawnPath) {
         const elem = getElement(svgCanvas.getId())
         const psl = getElement('path_stretch_line')

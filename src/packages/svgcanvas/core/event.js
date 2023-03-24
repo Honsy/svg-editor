@@ -775,6 +775,7 @@ const mouseUpEvent = (evt) => {
       const res = svgCanvas.pathActions.mouseUp(evt, element, mouseX, mouseY);
       ({ element } = res);
       ({ keep } = res)
+      console.log('eleemeeeee', element, res)
       break
     } case 'pathedit':
       keep = true
@@ -824,7 +825,7 @@ const mouseUpEvent = (evt) => {
       svgCanvas.setStarted(r.started || svgCanvas.getStarted())
     }
   })
-
+  console.warn('mouseUp', keep, element)
   if (!keep && element) {
     svgCanvas.getCurrentDrawing().releaseId(svgCanvas.getId())
     element.remove()

@@ -83,6 +83,7 @@ export const addSVGElementsFromJson = (data) => {
     }
   }
   const curShape = svgCanvas.getCurShape()
+  console.warn('curStyles',data.curStyles, curShape)
   if (data.curStyles) {
     assignAttributes(shape, {
       fill: curShape.fill,

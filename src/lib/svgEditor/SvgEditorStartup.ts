@@ -4,6 +4,7 @@ import { BaseEditorStartup } from './../base/BaseEditorStartup'
 import ConfigObj from './ConfigObj'
 import Rulers from './Rulers'
 import { merge } from 'lodash'
+import PaintBox from './components/PaintBox'
 
 const { $id, $qq, $click, convertUnit } = SvgCanvas
 
@@ -24,6 +25,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
   scale: number
   S: any[]
   started: boolean
+  paintBoxs: { fill: any; stroke: any }
   /**
    *
    */
@@ -32,6 +34,10 @@ export class SvgEditorStartup extends BaseEditorStartup {
     this.extensionsAdded = false
     this.messageQueue = []
     this.$container = div ?? $id('svg_editor')
+    this.paintBoxs = {
+      fill: null,
+      stroke: null
+    };
   }
 
   /**
@@ -45,28 +51,6 @@ export class SvgEditorStartup extends BaseEditorStartup {
     }
     this.scale = 1;
     this.configObj.load()
-    this.shapeProperty = {
-      shape: {
-        fill: ('none' == this.configObj.curConfig.initFill.color ? '' : '#') + this.configObj.curConfig.initFill.color,
-        fill_paint: null,
-        fill_opacity: this.configObj.curConfig.initFill.opacity,
-        stroke: '#' + this.configObj.curConfig.initStroke.color,
-        stroke_paint: null,
-        stroke_opacity: this.configObj.curConfig.initStroke.opacity,
-        stroke_width: this.configObj.curConfig.initStroke.width,
-        stroke_dasharray: 'none',
-        stroke_linejoin: 'miter',
-        stroke_linecap: 'butt',
-        opacity: this.configObj.curConfig.initOpacity
-      }
-    }
-    this.shapeProperty.text = merge(this.shapeProperty.shape, {
-      fill: '#000000',
-      stroke_width: 0,
-      font_size: 14,
-      font_family: 'sans-serif',
-      text_anchor: 'middle'
-    })
     this.S = new Array(1);
     this.started = false;
     // await import('./components/index.js')
@@ -78,6 +62,11 @@ export class SvgEditorStartup extends BaseEditorStartup {
     
     this.svgCanvasDom = $id('svgcanvas');
     this.svgCanvas = new SvgCanvas(this.svgCanvasDom, this.configObj.curConfig)
+
+    this.paintBoxs.fill = new PaintBox("#fill_color", "fill")
+    this.paintBoxs.stroke = new PaintBox("#stroke_color", "stroke")
+
+    console.log('paintBoxs', this.paintBoxs)
     // 初始化svg工具链
     init(this.svgCanvas);
 

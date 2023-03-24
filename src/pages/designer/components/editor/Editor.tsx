@@ -31,6 +31,24 @@ const Editor: React.FC<ILeftPanelProp> = ({}) => {
           <div id="workarea">
             <div id="svgcanvas"></div>
           </div>
+          <div className="bottom-bar tools_panel">
+            <input id="text" type="text" size={35} />
+            <div id="tools_bottom_2" className="colors">
+              <div className="color_tool" id="tool_fill" hidden>
+                <label className="icon_label"></label>
+                <div className="color_block">
+                  <div id="fill_color" className="color_block"></div>
+                </div>
+              </div>
+              <div className="color_tool" id="tool_stroke" hidden>
+                <label className="icon_label"></label>
+                <div className="color_block">
+                  <div id="stroke_bg"></div>
+                  <div id="stroke_color" className="color_block"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

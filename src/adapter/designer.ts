@@ -66,6 +66,7 @@ export default class Designer implements DesignerEventEmitter {
     this.initServiceListener();
     this.trigger(Events.EDITOR_LOADED, null)
     this.loadHmi()
+    this.setFillColor(this.colorFill)
   }
 
   initPropertyListener(domIds?: string[]) {
@@ -370,8 +371,13 @@ export default class Designer implements DesignerEventEmitter {
     // this.fillcolor;
   }
 
+  // 
+  updateSelect() {
+    this.editor.workarea.style.cursor = 'auto'
+    this.editor.svgCanvas.setMode('select')
+  }
+
   // ****************************Gauge*********************************
-  
   onGaugeAdded(eleadded: any) {
     let ga: GaugeSettings = this.getGaugeSettings(eleadded)
     this.checkGaugeAdded(ga)

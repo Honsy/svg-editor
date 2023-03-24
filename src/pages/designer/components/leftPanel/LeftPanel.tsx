@@ -41,7 +41,7 @@ const LeftPanel: React.FC<ILeftPanelProp> = ({}) => {
   // 按钮触发模式更改
   const handleSetMode = (mode) => {
     setCurrentMode(mode)
-    handleSetMode(mode)
+    designer.setMode(mode)
   }
   const isModeActive = (mode) => {
     return currentMode === mode
