@@ -21,7 +21,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
   selectedElement: any
   $svgEditor: any
   storagePromptState: any
-  shapeProperty: any  
+  shapeProperty: any
   scale: number
   S: any[]
   started: boolean
@@ -37,7 +37,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
     this.paintBoxs = {
       fill: null,
       stroke: null
-    };
+    }
   }
 
   /**
@@ -49,44 +49,34 @@ export class SvgEditorStartup extends BaseEditorStartup {
     if ('localStorage' in window) {
       this.storage = window.localStorage
     }
-    this.scale = 1;
+    this.scale = 1
     this.configObj.load()
-    this.S = new Array(1);
-    this.started = false;
+    this.S = new Array(1)
+    this.started = false
     // await import('./components/index.js')
     // await import('./dialogs/index.js')
     try {
       this.$svgEditor = $qq('.svg_editor')
       this.workarea = $id('workarea')
     } catch (error) {}
-    
-    this.svgCanvasDom = $id('svgcanvas');
+
+    this.svgCanvasDom = $id('svgcanvas')
     this.svgCanvas = new SvgCanvas(this.svgCanvasDom, this.configObj.curConfig)
 
-    this.paintBoxs.fill = new PaintBox("#fill_color", "fill")
-    this.paintBoxs.stroke = new PaintBox("#stroke_color", "stroke")
-
-    console.log('paintBoxs', this.paintBoxs)
+    this.paintBoxs.fill = new PaintBox('#fill_color', 'fill')
+    this.paintBoxs.stroke = new PaintBox('#stroke_color', 'stroke')
     // 初始化svg工具链
-    init(this.svgCanvas);
+    init(this.svgCanvas)
 
     this.rulers = new Rulers(this)
     this.selectedElement = null
 
-    this.svgCanvas.bind(
-      'updateCanvas',
-      /**
-       * @param {external:Window} win
-       * @param {PlainObject} centerInfo
-       * @param {false} centerInfo.center
-       * @param {module:math.XYObject} centerInfo.newCtr
-       * @listens module:svgcanvas.SvgCanvas#event:updateCanvas
-       * @returns {void}
-       */
-      (win: any, { center, newCtr }: any) => {
-        this.updateCanvas(center, newCtr)
-      }
-    )
+    this.svgCanvas.bind('onGaugeAdded', (win: any, { id, type }: any) => {
+      this.emitter.emit('onGaugeAdded', { id, type })
+    })
+    this.svgCanvas.bind('updateCanvas', (win: any, { center, newCtr }: any) => {
+      this.updateCanvas(center, newCtr)
+    })
 
     this.svgCanvas.textActions.setInputElem($id('text'))
 
@@ -175,7 +165,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
 
     const addListenerMulti = (element: any, eventNames: any, listener: any) => {
       if (!element) {
-        return;
+        return
       }
       eventNames.split(' ').forEach((eventName: any) => element.addEventListener(eventName, listener, false))
     }
@@ -215,7 +205,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
 
     addListenerMulti(window, 'load resize', centerCanvas)
 
-    this.svgCanvas.clearSelection();
+    this.svgCanvas.clearSelection()
 
     this.ready(() => {
       if (this.configObj.curConfig.showRulers) {
@@ -243,15 +233,15 @@ export class SvgEditorStartup extends BaseEditorStartup {
     // this.rulers = new Rulers(this)
   }
 
-          /**
-     * @function module:SVGthis.setPanning
-     * @param {boolean} active
-     * @returns {void}
-     */
-  setPanning(active,keypan) {
+  /**
+   * @function module:SVGthis.setPanning
+   * @param {boolean} active
+   * @returns {void}
+   */
+  setPanning(active, keypan) {
     this.svgCanvas.spaceKey = keypan = active
   }
-  
+
   /**
    * @fires module:svgcanvas.SvgCanvas#event:ext_addLangData
    * @fires module:svgcanvas.SvgCanvas#event:ext_langReady

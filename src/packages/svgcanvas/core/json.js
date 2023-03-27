@@ -186,11 +186,9 @@ export const addSvgGroupFromJson = (data) => {
   }
   assignAttributes(shape,  data.attr, 100);
   cleanupElement(shape)
-  svgEmitter.emit('onGaugeAdded', {
+  svgCanvas.call('onGaugeAdded', {
     id: data.id,
     type: data.type
   })
-
-  console.log(shape)
   return shape
 }

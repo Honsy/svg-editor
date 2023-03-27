@@ -7,8 +7,8 @@ export default {
     const svgEditor = this
     const { svgCanvas } = svgEditor;
     const mode = "gauge_progress";
-    const width = 100;
-    const height = 25;
+    const width = 25;
+    const height = 100;
     const classId = "svg-ext-" + mode;
     const prefixId = "GXP_";
     const t = {};

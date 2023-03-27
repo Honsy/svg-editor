@@ -88,6 +88,7 @@ import {
 } from './common/util.js'
 
 import dataStorage from './core/dataStorage.js'
+import EventEmitter from 'eventemitter3'
 
 const visElems =
   'a,circle,ellipse,foreignObject,g,image,line,path,polygon,polyline,rect,svg,text,tspan,use'
@@ -137,7 +138,7 @@ class SvgCanvas {
     this.initializeSvgCanvasMethods()
     unitsInit(this)
     const { pathActions } = pathModule
-
+    this.emitter = new EventEmitter();
     // initialize class variables
     this.saveOptions = { round_digits: 2 } // Object with save options
     this.importIds = {} // Object with IDs for imported files, to see if one was already added

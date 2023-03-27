@@ -379,6 +379,7 @@ export default class Designer implements DesignerEventEmitter {
 
   // ****************************Gauge*********************************
   onGaugeAdded(eleadded: any) {
+    console.log('onGaugeAdded')
     let ga: GaugeSettings = this.getGaugeSettings(eleadded)
     this.checkGaugeAdded(ga)
     setTimeout(() => {

@@ -674,6 +674,7 @@ export class SvgEditor extends SvgEditorStartup {
     this.svgCanvas.setMode(mode)
   }
   clickToSetMode(mode: string) {
+    console.log('setmode', mode)
     this.svgCanvas.setMode(mode)
   }
 }
