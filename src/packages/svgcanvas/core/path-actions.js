@@ -871,6 +871,7 @@ export const pathActionsMethod = (function () {
       } else if (svgCanvas.getCurrentMode() === 'pathedit') {
         this.toSelectMode()
       }
+
       if (path) { path.init().show(false) }
     },
     /**

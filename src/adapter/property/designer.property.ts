@@ -93,7 +93,6 @@ export default class DesignerProperty {
   // 同步选中节点属性
   updateContextPanel() {
     let elem = this.editor.selectedElement
-    console.log('elem', elem)
     // If element has just been deleted, consider it null
     if (!elem?.parentNode) {
       elem = null
@@ -110,7 +109,6 @@ export default class DesignerProperty {
     const isNode = currentMode === 'pathedit' 
 
     $("#selected_panel, #multiselected_panel, #threemoreselected_panel, #g_panel, #rect_panel, #circle_panel,#ellipse_panel, #line_panel, #text_panel, #image_panel, #container_panel, #use_panel, #a_panel, #xy_panel, #marker_panel, #htmlctrl_panel, #tool_stroke, #tool_angle, #shape_panel").hide();
-    console.log(elem, "elemelem")
     if (elem) {
       const elname = elem.nodeName
       $("#tool_angle").show();
@@ -143,10 +141,10 @@ export default class DesignerProperty {
           $('#path_node_y').value = point.y
           if (point.type) {
             segType.value = point.type
-            segType.removeAttribute('disabled')
+            segType.removeAttr('disabled')
           } else {
             segType.value = 4
-            segType.setAttribute('disabled', 'disabled')
+            segType.attr('disabled', 'disabled')
           }
         }
       }

@@ -82,7 +82,7 @@ export default {
       },
       mouseUp: function (e) {
         const currentMode = svgCanvas.getMode()
-        if (currentMode === mode) {
+        if (currentMode !== mode) {
           if (currentMode === "select" && e && e.selected && e.selected.id && e.selected.id.startsWith(prefixId)) {
             return e.selected.id
           } else {

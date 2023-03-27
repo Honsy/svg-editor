@@ -570,6 +570,7 @@ const mouseOutEvent = () => {
 * @returns {void}
 */
 const mouseUpEvent = (evt) => {
+  console.warn('mouseUpEvent')
   moveSelectionThresholdReached = false
   if (evt.button === 2) { return }
   if (!svgCanvas.getStarted()) { return }
@@ -773,9 +774,9 @@ const mouseUpEvent = (evt) => {
       svgCanvas.setStarted(true)
 
       const res = svgCanvas.pathActions.mouseUp(evt, element, mouseX, mouseY);
+      console.log('sdsadsad', res);
       ({ element } = res);
       ({ keep } = res)
-      console.log('eleemeeeee', element, res)
       break
     } case 'pathedit':
       keep = true
@@ -803,7 +804,7 @@ const mouseUpEvent = (evt) => {
       // This could occur in an extension
       break
   }
-
+  console.log('dsad111', keep, element)
   /**
 * The main (left) mouse button is released (anywhere).
 * @event module:svgcanvas.SvgCanvas#event:ext_mouseUp
@@ -825,8 +826,11 @@ const mouseUpEvent = (evt) => {
       svgCanvas.setStarted(r.started || svgCanvas.getStarted())
     }
   })
-  console.warn('mouseUp', keep, element)
+
+
+
   if (!keep && element) {
+
     svgCanvas.getCurrentDrawing().releaseId(svgCanvas.getId())
     element.remove()
     element = null
@@ -857,7 +861,6 @@ const mouseUpEvent = (evt) => {
 * @type {boolean}
 */
     svgCanvas.addedNew = true
-
     if (useUnit) { convertAttrs(element) }
 
     let aniDur = 0.2
@@ -884,6 +887,7 @@ const mouseUpEvent = (evt) => {
       element.setAttribute('opacity', curShape.opacity)
       element.setAttribute('style', 'pointer-events:inherit')
       cleanupElement(element)
+      console.log('setTimeout')
       if (svgCanvas.getCurrentMode() === 'path') {
         svgCanvas.pathActions.toEditMode(element)
       } else if (svgCanvas.getCurConfig().selectNew) {
