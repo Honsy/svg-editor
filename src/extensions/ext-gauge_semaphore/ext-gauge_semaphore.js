@@ -10,6 +10,7 @@ export default {
     const classId = "svg-ext-" + mode;
     const prefixId = "GSE_";
     const t = {};
+    let currentSvg;
     return {
       callback: function () {
         $("#gauge_semaphore_panel").hide()
@@ -25,7 +26,7 @@ export default {
           let a = svgCanvas.getNextId().replace("svg_", prefixId);
           let svgProperty = {
               fill: fill,
-              "font-size": v.getFontSize(),
+              "font-size": svgCanvas.getFontSize(),
               stroke: stroke,
               "stroke-width": strokeWidth,
               "font-family": svgCanvas.getFontFamily(),
@@ -59,16 +60,17 @@ export default {
           t.x = startX
           t.y = startY
           let c = svgCanvas.getNextId().replace("svg_", prefixId)
-          let g = svgCanvas.addSvgGroupFromJson({
+          currentSvg = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: c,
             type: classId,
             attr: svgAttr,
             elements: svgDom.elements
-          }).setAttribute("transform", "translate(" + startX + "," + startY + ")")
+          })
+          currentSvg.setAttribute("transform", "translate(" + startX + "," + startY + ")")
 
-          arg.recalculateDimensions(g);
-          g.getBBox();
+          svgCanvas.recalculateDimensions(currentSvg);
+          currentSvg.getBBox();
           return {started: true}
         }
       },
@@ -76,7 +78,7 @@ export default {
       mouseUp: function (e) {
         if (svgCanvas.getMode() === mode) return {
           keep: e.event.clientX != t.x && e.event.clientY != t.y,
-          element: arg,
+          element: currentSvg,
           started: false
         }
       },

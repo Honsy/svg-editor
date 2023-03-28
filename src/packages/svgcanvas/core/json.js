@@ -174,7 +174,7 @@ export const addSvgGroupFromJson = (data) => {
   }
 
   if (data.curStyles) {
-    assignAttributes(element, {
+    assignAttributes(shape, {
       fill: curShape.fill,
       stroke: curShape.stroke,
       "stroke-width": curShape.stroke_width,
@@ -184,11 +184,12 @@ export const addSvgGroupFromJson = (data) => {
       style: "pointer-events:inherit"
   }, 100)
   }
-  assignAttributes(shape,  data.attr, 100);
+  assignAttributes(shape, data.attr, 100);
   cleanupElement(shape)
   svgCanvas.call('onGaugeAdded', {
     id: data.id,
     type: data.type
   })
+  console.log('e.curStyles', shape)
   return shape
 }

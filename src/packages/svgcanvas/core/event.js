@@ -804,7 +804,6 @@ const mouseUpEvent = (evt) => {
       // This could occur in an extension
       break
   }
-  console.log('dsad111', keep, element)
   /**
 * The main (left) mouse button is released (anywhere).
 * @event module:svgcanvas.SvgCanvas#event:ext_mouseUp
@@ -827,7 +826,7 @@ const mouseUpEvent = (evt) => {
     }
   })
 
-
+  console.log('element keep', element, keep)
 
   if (!keep && element) {
 
@@ -867,6 +866,7 @@ const mouseUpEvent = (evt) => {
     let cAni
     const curShape = svgCanvas.getStyle()
     const opacAni = svgCanvas.getOpacAni()
+    console.log('element', element)
     if (opacAni.beginElement && Number.parseFloat(element.getAttribute('opacity')) !== curShape.opacity) {
       cAni = opacAni.cloneNode(true)
       cAni.setAttribute('to', curShape.opacity)
@@ -879,7 +879,7 @@ const mouseUpEvent = (evt) => {
     } else {
       aniDur = 0
     }
-
+    console.log('mouseUpsetTimeout')
     // Ideally this would be done on the endEvent of the animation,
     // but that doesn't seem to be supported in Webkit
     setTimeout(() => {

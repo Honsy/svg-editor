@@ -12,7 +12,7 @@ export default {
     const classId = "svg-ext-" + mode;
     const prefixId = "GXP_";
     const t = {};
-    let moveElement;
+    let currentSvg;
     return {
       callback: function () {
         $("#gauge_progress_panel").hide()
@@ -84,7 +84,7 @@ export default {
           t.x = startX
           t.y = startY
           let c = svgCanvas.getNextId().replace("svg_", prefixId)
-          let g = svgCanvas.addSvgGroupFromJson({
+          currentSvg = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: c,
             type: classId,
@@ -98,7 +98,7 @@ export default {
       mouseUp: function (e) {
         if (svgCanvas.getMode() === mode) return {
           keep: e.event.clientX != t.x && e.event.clientY != t.y,
-          element: moveElement,
+          element: currentSvg,
           started: false
         }
       },
