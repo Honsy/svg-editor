@@ -48,9 +48,9 @@ export default {
                 }],
                 attr: {
                   x: startX,
-                  y: startY - rect.height,
-                  height: rect.height,
-                  width: rect.width,
+                  y: startY - height,
+                  height: height,
+                  width: width,
                   id: "H-" + prefixNextId
                 }
               }]
@@ -77,7 +77,7 @@ export default {
         }
       },
       mouseMove: function (e) {
-        if (svgCanvas.getMode() === "resize" && e && e.selected && e.selected.id && e.selected.id.startsWith(m)) {
+        if (svgCanvas.getMode() === "resize" && e && e.selected && e.selected.id && e.selected.id.startsWith(prefixId)) {
           return e.selected.id
         }
       },

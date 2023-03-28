@@ -92,7 +92,7 @@ export default {
         }
       },
       mouseMove: function (e) {
-        if (svgCanvas.getMode() === "resize" && e && e.selected && e.selected.id && e.selected.id.startsWith(m)) {
+        if (svgCanvas.getMode() === "resize" && e && e.selected && e.selected.id && e.selected.id.startsWith(prefixId)) {
           return e.selected.id
         }
       },

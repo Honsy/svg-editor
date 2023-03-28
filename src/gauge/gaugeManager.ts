@@ -2,6 +2,7 @@ import { GaugeSettings } from "@/models/hmi";
 import { service } from "@/services/service";
 import { logger } from "@/utils/logger";
 import { GaugeProgressComponent } from "./controls/gauge-progress/gauge-progress";
+import { HtmlBagComponent } from "./controls/html-bag/html-bag";
 import { HtmlButtonComponent } from "./controls/html-button/html-button";
 import { HtmlChartComponent } from "./controls/html-chart/html-chart";
 import { HtmlSwitchComponent } from "./controls/html-switch/html-switch";
@@ -15,7 +16,9 @@ export class GaugesManager {
     ValueComponent,
     HtmlButtonComponent,
     HtmlSwitchComponent,
-    GaugeProgressComponent
+    GaugeProgressComponent,
+    HtmlChartComponent,
+    HtmlBagComponent
   ]
   constructor() { 
     // make the list of gauges tags to speed up the check
@@ -31,6 +34,17 @@ export class GaugesManager {
     }
 
     if (ga.type.startsWith(HtmlChartComponent.TypeTag)) {
+      let gauge = await HtmlChartComponent.initElement(ga).catch((err) => {
+        return err
+      });
+      this.mapGauges[ga.id] = gauge
+      return gauge
+    } if (ga.type.startsWith(HtmlBagComponent.TypeTag)) {
+      let gauge = await HtmlBagComponent.initElement(ga).catch((err) => {
+        return err
+      });
+      this.mapGauges[ga.id] = gauge
+      return gauge
     } else if(ga.type.startsWith(HtmlSwitchComponent.TypeTag)) {
       let gauge = await HtmlSwitchComponent.initElement(ga).catch((err) => {
         return err
@@ -38,7 +52,6 @@ export class GaugesManager {
       this.mapGauges[ga.id] = gauge
       return gauge
     } else if (ga.type.startsWith(GaugeProgressComponent.TypeTag)) {
-      console.log('ddd11')
       GaugeProgressComponent.initElement(ga)
       return true
     }else if (ga.type.startsWith(ValueComponent.TypeTag)) {
