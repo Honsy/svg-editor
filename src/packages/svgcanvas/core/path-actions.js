@@ -367,14 +367,30 @@ export const pathActionsMethod = (function () {
         const drawnPath = svgCanvas.getDrawnPath()
         if (!drawnPath) {
           const dAttr = 'M' + x + ',' + y + ' ' // Was this meant to work with the other `dAttr`? (was defined globally so adding `var` to at least avoid a global)
-          /* drawnPath = */ svgCanvas.setDrawnPath(svgCanvas.addSVGElementsFromJson({
-            element: 'path',
-            curStyles: true,
-            attr: {
+          /* drawnPath = */
+          let pathAttr = {
+            d: dAttr,
+            id: svgCanvas.getNextId(),
+            opacity: svgCanvas.getOpacity() / 2
+          }
+
+          if (svgCanvas.getCurrentMode() === 'pipe') {
+            let nextId = svgCanvas.getNextId().replace("svg_", "PIE_")
+            pathAttr = {
               d: dAttr,
-              id: svgCanvas.getNextId(),
+              id: nextId,
+              type: "svg-ext-pipe",
+              fill: "rgba(0,0,0,0)",
+              stroke: "rgba(41,171,226,1)",
+              "stroke-width": 10,
               opacity: svgCanvas.getOpacity() / 2
             }
+          }
+
+          svgCanvas.setDrawnPath(svgCanvas.addSVGElementsFromJson({
+            element: 'path',
+            curStyles: true,
+            attr: pathAttr
           }))
           // set stretchy line to first point
           stretchy.setAttribute('d', ['M', mouseX, mouseY, mouseX, mouseY].join(' '))
@@ -567,7 +583,7 @@ export const pathActionsMethod = (function () {
       const zoom = svgCanvas.getZoom()
       hasMoved = true
       const drawnPath = svgCanvas.getDrawnPath()
-      if (svgCanvas.getCurrentMode() === 'path') {
+      if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
         if (!drawnPath) { return }
         const seglist = drawnPath.pathSegList
         const index = seglist.numberOfItems - 1
@@ -708,7 +724,7 @@ export const pathActionsMethod = (function () {
       console.warn('pathAction', element)
       const drawnPath = svgCanvas.getDrawnPath()
       // Create mode
-      if (svgCanvas.getCurrentMode() === 'path') {
+      if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
         newPoint = null
         if (!drawnPath) {
           element = getElement(svgCanvas.getId())
@@ -759,6 +775,7 @@ export const pathActionsMethod = (function () {
     */
     toEditMode (element) {
       path = svgCanvas.getPath_(element)
+      console.warn('toEditMode')
       svgCanvas.setCurrentMode('pathedit')
       svgCanvas.clearSelection()
       path.setPathContext()

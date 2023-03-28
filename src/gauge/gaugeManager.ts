@@ -6,6 +6,7 @@ import { HtmlBagComponent } from "./controls/html-bag/html-bag";
 import { HtmlButtonComponent } from "./controls/html-button/html-button";
 import { HtmlChartComponent } from "./controls/html-chart/html-chart";
 import { HtmlSwitchComponent } from "./controls/html-switch/html-switch";
+import { PipeComponent } from "./controls/pipe/pipe";
 import { ValueComponent } from "./controls/value/value";
 
 export class GaugesManager {
@@ -25,6 +26,11 @@ export class GaugesManager {
     GaugesManager.Gauges.forEach((g) => {
       this.gaugesTags.push(g.TypeTag)
     })
+  }
+  async initInEditor(ga: GaugeSettings) {
+    if (ga.type.startsWith(PipeComponent.TypeTag)) {
+      return this.mapGauges[ga.id] = PipeComponent.detectChange(ga);
+    }
   }
 
   async initElementAdded(ga: GaugeSettings, isview: boolean) {

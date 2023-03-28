@@ -455,6 +455,7 @@ const mouseMoveEvent = (evt) => {
       break
       // update path stretch line coordinates
     }
+    case 'pipe':
     case 'path': // fall through
     case 'pathedit': {
       x *= zoom
@@ -626,14 +627,17 @@ const mouseUpEvent = (evt) => {
               svgCanvas.setCurText('font_family', selected.getAttribute('font-family'))
             // fallthrough
             default:
-              svgCanvas.setCurProperties('fill', selected.getAttribute('fill'))
-              svgCanvas.setCurProperties('fill_opacity', selected.getAttribute('fill-opacity'))
-              svgCanvas.setCurProperties('stroke', selected.getAttribute('stroke'))
-              svgCanvas.setCurProperties('stroke_opacity', selected.getAttribute('stroke-opacity'))
-              svgCanvas.setCurProperties('stroke_width', selected.getAttribute('stroke-width'))
-              svgCanvas.setCurProperties('stroke_dasharray', selected.getAttribute('stroke-dasharray'))
-              svgCanvas.setCurProperties('stroke_linejoin', selected.getAttribute('stroke-linejoin'))
-              svgCanvas.setCurProperties('stroke_linecap', selected.getAttribute('stroke-linecap'))
+              const type = selected.getAttribute("type");
+              if (type !== "svg-ext-pipe") {
+                svgCanvas.setCurProperties('fill', selected.getAttribute('fill'));
+                svgCanvas.setCurProperties('fill_opacity', selected.getAttribute('fill-opacity'));
+                svgCanvas.setCurProperties('stroke', selected.getAttribute('stroke'));
+                svgCanvas.setCurProperties('stroke_opacity', selected.getAttribute('stroke-opacity'))
+                svgCanvas.setCurProperties('stroke_width', selected.getAttribute('stroke-width'))
+                svgCanvas.setCurProperties('stroke_dasharray', selected.getAttribute('stroke-dasharray'))
+                svgCanvas.setCurProperties('stroke_linejoin', selected.getAttribute('stroke-linejoin'))
+                svgCanvas.setCurProperties('stroke_linecap', selected.getAttribute('stroke-linecap'))
+              }
           }
           svgCanvas.selectorManager.requestSelector(selected).showGrips(true)
         }
@@ -767,6 +771,7 @@ const mouseUpEvent = (evt) => {
       svgCanvas.selectOnly([element])
       svgCanvas.textActions.start(element)
       break
+    case "pipe":
     case 'path': {
       // set element to null here so that it is not removed nor finalized
       element = null
@@ -888,7 +893,7 @@ const mouseUpEvent = (evt) => {
       element.setAttribute('style', 'pointer-events:inherit')
       cleanupElement(element)
       console.log('setTimeout')
-      if (svgCanvas.getCurrentMode() === 'path') {
+      if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
         svgCanvas.pathActions.toEditMode(element)
       } else if (svgCanvas.getCurConfig().selectNew) {
         const modes = ['circle', 'ellipse', 'square', 'rect', 'fhpath', 'line', 'fhellipse', 'fhrect', 'star', 'polygon']
@@ -982,7 +987,7 @@ const mouseDownEvent = (evt) => {
   evt.preventDefault()
 
   if (rightClick) {
-    if (svgCanvas.getCurrentMode() === 'path') {
+    if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
       return
     }
     svgCanvas.setCurrentMode('select')

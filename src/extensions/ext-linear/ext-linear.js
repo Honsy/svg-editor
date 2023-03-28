@@ -1,6 +1,7 @@
 
 const name = 'help-linear';
 
+// 直标线
 export default {
   name,
   async init (l) {
