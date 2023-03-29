@@ -18,6 +18,7 @@ import * as draw from './draw.js'
 import * as pathModule from './path.js'
 import * as hstry from './history.js'
 import { findPos } from '../../svgcanvas/common/util.js'
+import { getTransformList } from '../common/svgtransformlist.js'
 
 const {
   InsertElementCommand
@@ -571,7 +572,6 @@ const mouseOutEvent = () => {
 * @returns {void}
 */
 const mouseUpEvent = (evt) => {
-  console.warn('mouseUpEvent')
   moveSelectionThresholdReached = false
   if (evt.button === 2) { return }
   if (!svgCanvas.getStarted()) { return }
@@ -600,6 +600,7 @@ const mouseUpEvent = (evt) => {
   const useUnit = false // (svgCanvas.getCurConfig().baseUnit !== 'px');
   svgCanvas.setStarted(false)
   let t
+  console.warn('mouseUpEvent', svgCanvas.getCurrentMode())
   switch (svgCanvas.getCurrentMode()) {
     // intentionally fall-through to select here
     case 'resize':
@@ -667,7 +668,13 @@ const mouseUpEvent = (evt) => {
         if (elem) {
           elem.removeAttribute('style')
           walkTree(elem, (el) => {
-            el.removeAttribute('style')
+            let warpEl = el;
+            let flag = false;
+            // 此处备注 无限循环至顶层parentNode 如果存在foreignObject 则不清除子element的style 简单理解就是不处理foreignObject的style
+            for (; warpEl.parentNode;) {
+              "foreignObject" === warpEl.parentNode.tagName && (flag = true),warpEl = warpEl.parentNode
+            }
+            flag || el.parentElement && "foreignObject" === el.parentElement.nodeName || el.removeAttribute('style')
           })
         }
       }
@@ -779,7 +786,8 @@ const mouseUpEvent = (evt) => {
       svgCanvas.setStarted(true)
 
       const res = svgCanvas.pathActions.mouseUp(evt, element, mouseX, mouseY);
-      console.log('sdsadsad', res);
+      console.log('mouseUppathpathpath', res);
+
       ({ element } = res);
       ({ keep } = res)
       break
@@ -809,6 +817,8 @@ const mouseUpEvent = (evt) => {
       // This could occur in an extension
       break
   }
+  console.warn('mouseUpsetTimeout111', element, keep)
+
   /**
 * The main (left) mouse button is released (anywhere).
 * @event module:svgcanvas.SvgCanvas#event:ext_mouseUp
@@ -831,7 +841,7 @@ const mouseUpEvent = (evt) => {
     }
   })
 
-  console.log('element keep', element, keep)
+  console.warn('mouseUpsetTimeout', element, keep)
 
   if (!keep && element) {
 
@@ -884,7 +894,6 @@ const mouseUpEvent = (evt) => {
     } else {
       aniDur = 0
     }
-    console.log('mouseUpsetTimeout')
     // Ideally this would be done on the endEvent of the animation,
     // but that doesn't seem to be supported in Webkit
     setTimeout(() => {
@@ -892,7 +901,6 @@ const mouseUpEvent = (evt) => {
       element.setAttribute('opacity', curShape.opacity)
       element.setAttribute('style', 'pointer-events:inherit')
       cleanupElement(element)
-      console.log('setTimeout')
       if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
         svgCanvas.pathActions.toEditMode(element)
       } else if (svgCanvas.getCurConfig().selectNew) {
@@ -1071,10 +1079,13 @@ const mouseDownEvent = (evt) => {
           // a transform to use for its translate
           for (const selectedElement of selectedElements) {
             if (!selectedElement) { continue }
+            // const slist = getTransformList(selectedElement)
             const slist = selectedElement.transform?.baseVal
+
             if (slist.numberOfItems) {
               slist.insertItemBefore(svgRoot.createSVGTransform(), 0)
             } else {
+              console.log('appendItem', svgRoot.createSVGTransform())
               slist.appendItem(svgRoot.createSVGTransform())
             }
           }

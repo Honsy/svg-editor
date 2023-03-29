@@ -1,3 +1,4 @@
+import { supportsNativeTransformLists } from "./browser";
 
 /**
 * Returns an object that behaves like a `SVGTransformList` for the given DOM element.

@@ -721,13 +721,17 @@ export const pathActionsMethod = (function () {
     * @returns {module:path.keepElement|void}
     */
     mouseUp (evt, element, _mouseX, _mouseY) {
-      console.warn('pathAction', element)
       const drawnPath = svgCanvas.getDrawnPath()
       // Create mode
       if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
         newPoint = null
         if (!drawnPath) {
-          element = getElement(svgCanvas.getId())
+          let id = svgCanvas.getId();
+          // 兼容管道
+          if (svgCanvas.getCurrentMode() === 'pipe') {
+            id = id.replace("svg_", "PIE_")
+          }
+          element = getElement(id)
           svgCanvas.setStarted(false)
           firstCtrl = null
         }

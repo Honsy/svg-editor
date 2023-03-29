@@ -5,9 +5,12 @@ import { GaugeProgressComponent } from "./controls/gauge-progress/gauge-progress
 import { HtmlBagComponent } from "./controls/html-bag/html-bag";
 import { HtmlButtonComponent } from "./controls/html-button/html-button";
 import { HtmlChartComponent } from "./controls/html-chart/html-chart";
+import { HtmlGraphComponent } from "./controls/html-graph/html-graph";
 import { HtmlSwitchComponent } from "./controls/html-switch/html-switch";
 import { PipeComponent } from "./controls/pipe/pipe";
+import { SliderComponent } from "./controls/slider/slider";
 import { ValueComponent } from "./controls/value/value";
+import { IotSliderComponent } from "./gui-helpers/IotSlider/IotSlider";
 
 export class GaugesManager {
   mapGauges = {}
@@ -19,7 +22,9 @@ export class GaugesManager {
     HtmlSwitchComponent,
     GaugeProgressComponent,
     HtmlChartComponent,
-    HtmlBagComponent
+    HtmlBagComponent,
+    SliderComponent,
+    HtmlGraphComponent
   ]
   constructor() { 
     // make the list of gauges tags to speed up the check
@@ -33,6 +38,7 @@ export class GaugesManager {
     }
   }
 
+  // 中间件提供foreginObject渲染
   async initElementAdded(ga: GaugeSettings, isview: boolean) {
     if (!ga || !ga.type) {
       console.error('!TOFIX', ga)
@@ -45,7 +51,29 @@ export class GaugesManager {
       });
       this.mapGauges[ga.id] = gauge
       return gauge
-    } if (ga.type.startsWith(HtmlBagComponent.TypeTag)) {
+    } else if (ga.type.startsWith(HtmlGraphComponent.TypeTag)) {
+      let gauge: any = await HtmlGraphComponent.initElement(ga)
+      if (gauge) {
+        // this.setGraphPropety(gauge, ga.property)
+        // gauge.onReload.addListener('onReload', (query: DaqQuery) => {
+        //   this.hmiService.getDaqValues(query).subscribe(
+        //     (result) => {
+        //       gauge.setValues(query.sids, result)
+        //     },
+        //     (err) => {
+        //       gauge.setValues(query.sids, null)
+        //       console.error('get DAQ values err: ' + err)
+        //     }
+        //   )
+        // })
+        this.mapGauges[ga.id] = gauge
+      }
+      return gauge
+    } else if (ga.type.startsWith(SliderComponent.TypeTag)) {
+      let gauge: IotSliderComponent = SliderComponent.initElement(ga)
+      this.mapGauges[ga.id] = gauge
+      return gauge
+    } else if (ga.type.startsWith(HtmlBagComponent.TypeTag)) {
       let gauge = await HtmlBagComponent.initElement(ga).catch((err) => {
         return err
       });

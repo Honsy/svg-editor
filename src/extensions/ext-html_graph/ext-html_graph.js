@@ -37,7 +37,7 @@ export default {
           const fill = svgCanvas.getColor("fill");
           const stroke = svgCanvas.getColor("stroke");
           const startX = e.start_x;
-          const startY = e.start_y - height;
+          const startY = e.start_y - rect.height;
           let nextId = svgCanvas.getNextId();
           let prefixNextId = svgCanvas.getNextId().replace("svg_", prefixId);
           let content = [{

@@ -166,6 +166,7 @@ export const addSvgGroupFromJson = (data) => {
             contentElement.style.backgroundColor = shape.fill
             contentElement.style.color = shape.stroke
           }
+          console.log("contentElement", contentElement)
           newElement.appendChild(contentElement)
         }
       }

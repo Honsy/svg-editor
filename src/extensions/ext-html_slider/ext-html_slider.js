@@ -29,7 +29,7 @@ export default {
                 attr: {
                   id: nextId,
                   x: startX,
-                  y: startY,
+                  y: startY - height,
                   width: width,
                   height: height,
                   "stroke-width": 0,
