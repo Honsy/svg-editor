@@ -8,9 +8,9 @@ export class HtmlTableComponent {
   static TypeTag = 'svg-ext-own_ctrl-table'
   static LabelTag = 'HtmlTable'
   static prefixD = 'D-OXC_'
-  
+
   static initElement(gab: GaugeSettings): any {
-    let ele = document.getElementById(gab.id)
+    
     return new Promise((resolve, reject) => {
       try {
         let ele = document.getElementById(gab.id)

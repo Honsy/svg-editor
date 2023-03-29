@@ -63,9 +63,9 @@ export default {
           svgElement = svgCanvas.addSvgGroupFromJson({
             group: "g",
             id: warpId,
-            type: classId,
+            type: changeClassId,
             attr: {
-              type: classId,
+              type: changeClassId,
               style: "pointer-events:none",
               fill: fill,
               stroke: stroke,

@@ -6,7 +6,10 @@ import { HtmlBagComponent } from "./controls/html-bag/html-bag";
 import { HtmlButtonComponent } from "./controls/html-button/html-button";
 import { HtmlChartComponent } from "./controls/html-chart/html-chart";
 import { HtmlGraphComponent } from "./controls/html-graph/html-graph";
+import { HtmlIframeComponent } from "./controls/html-iframe/html-ifame";
 import { HtmlSwitchComponent } from "./controls/html-switch/html-switch";
+import { DataTableComponent } from "./controls/html-table/data-table";
+import { HtmlTableComponent } from "./controls/html-table/html-table";
 import { PipeComponent } from "./controls/pipe/pipe";
 import { SliderComponent } from "./controls/slider/slider";
 import { ValueComponent } from "./controls/value/value";
@@ -24,7 +27,9 @@ export class GaugesManager {
     HtmlChartComponent,
     HtmlBagComponent,
     SliderComponent,
-    HtmlGraphComponent
+    HtmlGraphComponent,
+    HtmlTableComponent,
+    HtmlIframeComponent
   ]
   constructor() { 
     // make the list of gauges tags to speed up the check
@@ -73,7 +78,14 @@ export class GaugesManager {
       let gauge: IotSliderComponent = SliderComponent.initElement(ga)
       this.mapGauges[ga.id] = gauge
       return gauge
-    } else if (ga.type.startsWith(HtmlBagComponent.TypeTag)) {
+    } else if (ga.type.startsWith(HtmlIframeComponent.TypeTag)) {
+      HtmlIframeComponent.initElement(ga, isview)
+      return true
+    } else if (ga.type.startsWith(HtmlTableComponent.TypeTag)) {
+      let gauge: DataTableComponent = HtmlTableComponent.initElement(ga)
+      this.mapGauges[ga.id] = gauge
+      return gauge
+    }else if (ga.type.startsWith(HtmlBagComponent.TypeTag)) {
       let gauge = await HtmlBagComponent.initElement(ga).catch((err) => {
         return err
       });
@@ -100,13 +112,14 @@ export class GaugesManager {
   }
 
   createSettings(id: string, type: string) {
-    console.log('id ,',id)
     let gs: GaugeSettings = null
     if (type) {
       for (let i = 0; i < GaugesManager.Gauges.length; i++) {
+        console.log('查找配置', type, GaugesManager.Gauges[i].TypeTag, type.startsWith(GaugesManager.Gauges[i].TypeTag))
         if (type.startsWith(GaugesManager.Gauges[i].TypeTag)) {
           gs = new GaugeSettings(id, type)
           gs.label = GaugesManager.Gauges[i].LabelTag
+          console.log('生成配置', gs)
           return gs
         }
       }
