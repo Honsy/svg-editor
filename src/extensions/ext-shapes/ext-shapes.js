@@ -38,21 +38,7 @@ export default {
     let startY
 
     return {
-      callback () {
-        if ($id('tool_shapelib') === null) {
-          const extPath = svgEditor.configObj.curConfig.extPath
-          const buttonTemplate = `
-          <se-explorerbutton id="tool_shapelib" title="Shape library" lib="${extPath}/ext-shapes/shapelib/"
-          src="shapelib.svg"></se-explorerbutton>
-          `
-          canv.insertChildAtIndex($id('tools_left'), buttonTemplate, 9)
-          $click($id('tool_shapelib'), () => {
-            if (this.leftPanel.updateLeftPanel('tool_shapelib')) {
-              canv.setMode(modeId)
-            }
-          })
-        }
-      },
+      callback () {},
       mouseDown (opts) {
         const mode = canv.getMode()
         if (mode !== modeId) { return undefined }

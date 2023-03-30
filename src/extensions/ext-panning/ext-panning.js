@@ -12,18 +12,6 @@
 
 const name = 'panning'
 
-const loadExtensionTranslation = async function (svgEditor) {
-  let translationModule
-  const lang = svgEditor.configObj.pref('lang')
-  try {
-    translationModule = await import(`./locale/${lang}.js`)
-  } catch (_error) {
-    console.warn(`Missing translation (${lang}) for ${name} - using 'en'`)
-    translationModule = await import('./locale/en.js')
-  }
-  svgEditor.i18next.addResourceBundle(lang, name, translationModule.default)
-}
-
 export default {
   name,
   async init () {
@@ -38,20 +26,6 @@ export default {
     }
     return {
       name: "Extension Panning",
-      callback () {
-        const btitle = `${name}:buttons.0.title`
-        // Add the button and its handler(s)
-        const buttonTemplate = document.createElement('template')
-        buttonTemplate.innerHTML = `
-        <se-button id="ext-panning" title="${btitle}" src="panning.svg"></se-button>
-        `
-        insertAfter($id('tool_zoom'), buttonTemplate.content.cloneNode(true))
-        $click($id('ext-panning'), () => {
-          if (this.leftPanel.updateLeftPanel('ext-panning')) {
-            svgCanvas.setMode('ext-panning')
-          }
-        })
-      },
       mouseDown () {
         if (svgCanvas.getMode() === 'ext-panning') {
           svgEditor.setPanning(true)

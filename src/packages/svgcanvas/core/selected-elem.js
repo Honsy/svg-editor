@@ -313,6 +313,7 @@ const cloneSelectedElements = (x, y) => {
  * @returns {void}
  */
 const alignSelectedElements = (type, relativeTo) => {
+  console.log('垂直')
   const selectedElements = svgCanvas.getSelectedElements()
   const bboxes = [] // angles = [];
   const len = selectedElements.length

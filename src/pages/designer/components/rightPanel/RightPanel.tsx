@@ -42,11 +42,11 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
             <div id="xy_panel" className="_toolset">
               <div className="svg-property-split2">
                 <div className="svg-property">
-                  <span>x坐标</span>
+                  <span>起始X坐标</span>
                   <input id="selected_x" className="attr_changer rightbar-input" type="number" size={4} data-attr="x" />
                 </div>
                 <div className="svg-property">
-                  <span>y坐标</span>
+                  <span>起始Y坐标</span>
                   <input id="selected_y" className="attr_changer rightbar-input" type="number" size={4} data-attr="y" />
                 </div>
               </div>
@@ -55,21 +55,21 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
             <div id="line_panel">
               <div className="svg-property-split2">
                 <div className="svg-property">
-                  <span>x1</span>
+                  <span>起始X坐标</span>
                   <input id="line_x1" className="attr_changer rightbar-input" type="number" size={4} data-attr="x1" />
                 </div>
                 <div className="svg-property">
-                  <span>y1</span>
+                  <span>起始Y坐标</span>
                   <input id="line_y1" className="attr_changer rightbar-input" type="number" size={4} data-attr="y1" />
                 </div>
               </div>
               <div className="svg-property-split2">
                 <div className="svg-property">
-                  <span>x2</span>
+                  <span>终止X坐标</span>
                   <input id="line_x2" className="attr_changer rightbar-input" type="number" size={4} data-attr="x2" />
                 </div>
                 <div className="svg-property">
-                  <span>y2</span>
+                  <span>终止Y坐标</span>
                   <input id="line_y2" className="attr_changer rightbar-input" type="number" size={4} data-attr="y2" />
                 </div>
               </div>
@@ -191,13 +191,6 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
                 </div>
                 <div className="svg-property"></div>
               </div>
-              <div className="svg-property-split2">
-                <div className="svg-property">
-                  <span>透明度</span>
-                  <input id="blur" size={4} defaultValue="0" type="number" className="rightbar-input" />
-                </div>
-                <div className="svg-property"></div>
-              </div>
             </div>
           </div>
         </Collapse.Panel>
@@ -279,15 +272,15 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
             <div className="svg-property-split3">
               <div className="svg-property">
                 <span>开始</span>
-                <select id="start_marker" className="style-stroke" onClick={(e) => designer.editor.onSetMarker('start_marker', 0)}></select>
+                <select id="start_marker" className="style-stroke" onChange={(e) => designer.editor.onSetMarker('start_marker', e.target.selectedIndex)}></select>
               </div>
               <div className="svg-property">
                 <span>中间的</span>
-                <select id="mid_marker" className="style-stroke" onClick={(e) => designer.editor.onSetMarker('mid_marker', 0)}></select>
+                <select id="mid_marker" className="style-stroke" onChange={(e) => designer.editor.onSetMarker('mid_marker', e.target.selectedIndex)}></select>
               </div>
               <div className="svg-property">
                 <span>结束</span>
-                <select id="end_marker" className="style-stroke" onClick={(e) => designer.editor.onSetMarker('end_marker', 0)}></select>
+                <select id="end_marker" className="style-stroke" onChange={(e) => designer.editor.onSetMarker('end_marker',e.target.selectedIndex)}></select>
               </div>
             </div>
           </div>

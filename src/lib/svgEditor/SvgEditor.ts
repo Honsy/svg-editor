@@ -522,7 +522,7 @@ export class SvgEditor extends SvgEditorStartup {
     throw new Error('Method not implemented.')
   }
   alignSelectedElements(letter: string) {
-    this.svgCanvas.alignSelectedElements(letter)
+    this.svgCanvas.alignSelectedElements(letter, "page");
   }
   onSetStrokeOption(element, n = false) {
     let id = element.id;
@@ -542,7 +542,10 @@ export class SvgEditor extends SvgEditorStartup {
   }
 
   onSetMarker(id, marker) {
-    if (marker >= 0) {}
+    console.log(marker)
+    if (marker >= 0) {
+      this.svgCanvas.setMarker(id, marker);
+    }
   }
 
   setIcon (t, n, o) {

@@ -53,7 +53,7 @@ export default class DesignerProperty {
       'image_width',
       'image_height',
       'path_node_x',
-      'path_node_y'
+      'path_node_y',
     ]
 
     doms.map((item) => {
@@ -61,6 +61,37 @@ export default class DesignerProperty {
         $id(item).addEventListener('change', this.attrChanger.bind(this))        
       }
     })
+    // 角度事件绑定
+    $("#angle").SpinButton({
+      min: -180,
+      max: 180,
+      step: 5,
+      stateObj: this.editor,
+      callback: this.handleAngleChange.bind(this)
+    })
+    // 线宽绑定
+    $("#stroke_width").SpinButton({
+      min: 0,
+      max: 99,
+      smallStep: .1,
+      callback: this.handleStrokeWitdhChange.bind(this)
+    })
+    // 线条样式
+    $("#stroke_style").change((e) => {
+      this.editor.svgCanvas.setStrokeAttr("stroke-dasharray", $("#stroke_style").val());
+    })
+  }
+
+  handleStrokeWitdhChange(e) {
+    let value = e.value;
+    if (value === 0 && this.selectedElement && ["line", "polyline"].indexOf(this.selectedElement.nodeName) >= 0) {
+      value = e.value = 1;
+    }
+    this.editor.svgCanvas.setStrokeWidth(value)
+  }
+
+  handleAngleChange(e) {
+    this.editor.svgCanvas.setRotationAngle(e.value)
   }
 
   selectedChanged(win: any, elems: any) {

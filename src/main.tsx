@@ -6,6 +6,10 @@ import "./styles/index.scss"
 import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import { DesignerContext, designer } from "./context/designer.context";
+import jQueryPluginSpinButton from './plugins/jquery/jQuery.SpinButton'
+
+// SpinButton插件
+jQueryPluginSpinButton($);
 
 (function () {
   const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

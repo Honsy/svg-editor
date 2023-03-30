@@ -9,18 +9,6 @@
 
 const name = 'grid'
 
-const loadExtensionTranslation = async function (svgEditor) {
-  let translationModule
-  const lang = svgEditor.configObj.pref('lang')
-  try {
-    translationModule = await import(`./locale/${lang}.js`)
-  } catch (_error) {
-    console.warn(`Missing translation (${lang}) for ${name} - using 'en'`)
-    translationModule = await import('./locale/en.js')
-  }
-  svgEditor.i18next.addResourceBundle(lang, name, translationModule.default)
-}
-
 export default {
   name,
   async init () {
@@ -158,20 +146,7 @@ export default {
         if (showGrid) { updateGrid(zoom) }
       },
       callback () {
-        // Add the button and its handler(s)
-        const buttonTemplate = document.createElement('template')
-        const title = `${name}:buttons.0.title`
-        buttonTemplate.innerHTML = `
-          <se-button id="view_grid" title="${title}" src="grid.svg"></se-button>
-        `
-        $id('editor_panel').append(buttonTemplate.content.cloneNode(true))
-        $click($id('view_grid'), () => {
-          svgEditor.configObj.curConfig.showGrid = showGrid = !showGrid
-          gridUpdate()
-        })
-        if (showGrid) {
-          gridUpdate()
-        }
+        showGrid && gridUpdate();
       }
     }
   }

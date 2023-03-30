@@ -74,6 +74,7 @@ export class SvgEditorStartup extends BaseEditorStartup {
     this.svgCanvas.bind('onGaugeAdded', (win: any, { id, type }: any) => {
       this.emitter.emit('onGaugeAdded', { id, type })
     })
+    this.svgCanvas.bind('extension_added', this.onExtensionAdded.bind(this))
     this.svgCanvas.bind('updateCanvas', (win: any, { center, newCtr }: any) => {
       this.updateCanvas(center, newCtr)
     })
@@ -231,6 +232,21 @@ export class SvgEditorStartup extends BaseEditorStartup {
     // $('#svgcanvas').on('mouseup', this.handleMouseUp)
     // $('#svgcanvas').on('mousewheel DOMMouseScroll', this.handleMouseWheel)
     // this.rulers = new Rulers(this)
+  }
+
+  onExtensionAdded(win, data) {
+    if (data) {
+      let loaded = false;
+      let i = true;
+      const runCallback = function() {
+        if (data.callback && !loaded && i) {
+          loaded = true;
+          data.callback()
+        }
+      }
+      data.mySetMarker && (this.svgCanvas.setMarker = data.mySetMarker)
+      runCallback()
+    }
   }
 
   /**
