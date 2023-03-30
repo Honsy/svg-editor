@@ -387,12 +387,11 @@ export default class Designer implements DesignerEventEmitter {
     }, 700)
   }
   getGaugeSettings(ele: any) {
-
     if (ele && this.currentView) {
       if (this.currentView.items[ele.id]) {
         return this.currentView.items[ele.id]
       }
-      console.log('获取Gause配置', ele)
+      console.warn('获取Gause配置', ele.id, ele.type, service.gaugesManager.createSettings(ele.id, ele.type))
       return service.gaugesManager.createSettings(ele.id, ele.type)
     }
     return null

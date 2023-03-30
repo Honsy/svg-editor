@@ -11,6 +11,7 @@ import { HtmlSwitchComponent } from "./controls/html-switch/html-switch";
 import { DataTableComponent } from "./controls/html-table/data-table";
 import { HtmlTableComponent } from "./controls/html-table/html-table";
 import { PipeComponent } from "./controls/pipe/pipe";
+import { ShapesComponent } from "./controls/shapes/shapes";
 import { SliderComponent } from "./controls/slider/slider";
 import { ValueComponent } from "./controls/value/value";
 import { IotSliderComponent } from "./gui-helpers/IotSlider/IotSlider";
@@ -29,7 +30,8 @@ export class GaugesManager {
     SliderComponent,
     HtmlGraphComponent,
     HtmlTableComponent,
-    HtmlIframeComponent
+    HtmlIframeComponent,
+    ShapesComponent
   ]
   constructor() { 
     // make the list of gauges tags to speed up the check

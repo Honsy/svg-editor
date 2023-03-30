@@ -17,7 +17,7 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
 
   const onSelectElementChange = (event, data: EditorSelectElement) => {
     console.log('11232132', data)
-    setSelectedElement(data.selectedElement)
+    // setSelectedElement(data.eles)
   }
   const onAlignSelected = (letter: string) => {
     designer.editor.alignSelectedElements(letter.charAt(0))

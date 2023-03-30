@@ -119,7 +119,26 @@ export default class DesignerProperty {
         multiselected: this.editor.multiselected
       }
     )
-    this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {selectedElement: this.selectedElement, multiselected: this.editor.multiselected})
+
+    let params = []
+    if (this.editor.multiselected) {
+      for (let index = 0; index < elems.length; index++) {
+        if (elems[index]) {
+          params.push({
+            id: elems[index].id,
+            type:elems[index].getAttribute("type")
+          })
+        }
+      }
+      this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {eles: params})
+    } else {
+      if (this.selectedElement) {
+        params.push({id: this.selectedElement.id, type: this.selectedElement.getAttribute('type')})
+        this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {eles: params})
+      } else {
+        this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, null)
+      }
+    }
   }
   // 同步选中节点属性
   updateContextPanel() {
@@ -204,6 +223,7 @@ export default class DesignerProperty {
         elem.getAttribute("width"); 
         elem.getAttribute("heght")
         x = Number.parseFloat(x);
+        y = Number.parseFloat(y);
         x = x.toFixed(Number.isInteger(x) ? 0 : 2)
         y = y.toFixed(Number.isInteger(y) ? 0 : 2)
         $('#selected_x').val(x || 0)

@@ -47,8 +47,7 @@ export interface EditorSelectView {
 
 
 export interface EditorSelectElement {
-  selectedElement?: any 
-  multiselected: boolean
+  eles: any[] 
 }
 
 
