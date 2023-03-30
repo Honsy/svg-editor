@@ -1,5 +1,5 @@
 import { Editor } from '@/lib/editor/editor'
-import SvgCanvas from '@svgedit/svgcanvas'
+import SvgCanvas from '@/packages/svgcanvas/svgcanvas'
 import { SvgEditor } from '@/lib/svgEditor/SvgEditor'
 import Designer from '../designer'
 import { Events } from '@/events/event'

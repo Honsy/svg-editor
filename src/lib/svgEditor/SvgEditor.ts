@@ -1,7 +1,7 @@
 import ConfigObj from './ConfigObj'
 import { SvgEditorStartup } from './SvgEditorStartup'
 import { isMac } from '@/packages/svgcanvas/common/browser'
-import { isValidUnit } from '@svgedit/svgcanvas/core/units'
+import { isValidUnit } from '@/packages/svgcanvas/core/units'
 import { assignAttributes, cleanupElement, getElement, init } from '@/packages/svgcanvas/core/utilities'
 
 import SvgCanvas from '@/packages/svgcanvas/svgcanvas'
@@ -454,8 +454,8 @@ export class SvgEditor extends SvgEditorStartup {
     this.svgCanvas.setPaint(type, paint)
   }
   setDocProperty(name, width, height, bkColor) {
-    const widthFlag = !(width != 'fit' && !isValidUnit('width', width))
-    const heightFlag = !(height != 'fit' && !isValidUnit('height', height))
+    const widthFlag = !(width != 'fit' && !isValidUnit('width', width, null))
+    const heightFlag = !(height != 'fit' && !isValidUnit('height', height, null))
     if (widthFlag && heightFlag) {
       this.svgCanvas.setResolution(width, height)
     }

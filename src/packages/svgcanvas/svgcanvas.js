@@ -201,6 +201,8 @@ class SvgCanvas {
     // This is a container for the document being edited, not the document itself.
     this.svgroot = svgRootElement(this.svgdoc, dimensions)
     container.append(this.svgroot)
+
+    debugger
     // The actual element that represents the final output SVG element.
     this.svgContent = this.svgdoc.createElementNS(NS.SVG, 'svg')
     touchInit(this)

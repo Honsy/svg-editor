@@ -1,4 +1,4 @@
-import SvgCanvas from '@svgedit/svgcanvas'
+import SvgCanvas from '@/packages/svgcanvas/svgcanvas'
 
 const { $id, getTypeMap } = SvgCanvas
 
@@ -65,7 +65,6 @@ class Rulers {
     const contentElem = this.svgCanvas.getSvgContent()
     const units = getTypeMap()
     const unit = units[this.editor.configObj.curConfig.baseUnit] // 1 = 1px
-
     // draw x ruler then y ruler
     for (d = 0; d < 2; d++) {
       const isX = (d === 0)
@@ -75,7 +74,7 @@ class Rulers {
       const $hcanvOrig = $id('ruler_' + dim).querySelector('canvas')
 
       // Bit of a hack to fully clear the canvas in Safari & IE9
-      const $hcanv = $hcanvOrig.cloneNode(true)
+      const $hcanv: any = $hcanvOrig.cloneNode(true)
       $hcanvOrig.replaceWith($hcanv)
 
       const hcanv = $hcanv
@@ -144,6 +143,7 @@ class Rulers {
       let labelPos = rulerD - bigInt
       // draw big intervals
       let ctxNum = 0
+
       while (rulerD < totalLen) {
         ctx.fillStyle = "#CACACA";
         labelPos += bigInt

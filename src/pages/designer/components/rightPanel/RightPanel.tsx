@@ -120,17 +120,17 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
             <div id="circle_panel">
               <div className="svg-property-split2">
                 <div className="svg-property">
-                  <span>cx</span>
+                  <span>圆心X坐标</span>
                   <input id="circle_cx" type="number" className="attr_changer rightbar-input" size={4} data-attr="cx" />
                 </div>
                 <div className="svg-property">
-                  <span>cy</span>
+                  <span>圆心Y坐标</span>
                   <input id="circle_cy" type="number" className="attr_changer rightbar-input" size={4} data-attr="cy" />
                 </div>
               </div>
               <div className="svg-property-split2">
                 <div className="svg-property">
-                  <span>circler</span>
+                  <span>半径</span>
                   <input id="circle_r" type="number" className="attr_changer rightbar-input" size={4} data-attr="r" />
                 </div>
               </div>
