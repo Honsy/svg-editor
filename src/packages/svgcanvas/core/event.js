@@ -841,7 +841,7 @@ const mouseUpEvent = (evt) => {
     }
   })
 
-  console.warn('mouseUpsetTimeout', element, keep)
+  console.warn('mouseUpsetTimeout', element,element.getAttribute('type'), keep)
 
   if (!keep && element) {
 

@@ -4,7 +4,7 @@ import RightPanel from "./components/rightPanel/RightPanel";
 import TopPanel from "./components/topPanel/TopPanel";
 import Editor from "./components/editor/Editor";
 import Designer from "@/adapter/designer";
-import "./viz.designer.scss";
+import "./designer.page.scss";
 import { service } from "@/services/service";
 
 export const designer = new Designer();

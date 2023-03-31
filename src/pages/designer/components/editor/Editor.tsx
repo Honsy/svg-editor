@@ -1,6 +1,6 @@
 import Designer from '@/adapter/designer'
 import React, { useEffect, useRef } from 'react'
-import { designer } from '../../VizDesigner'
+import { designer } from '../../DesignerPage'
 
 export interface ILeftPanelProp {}
 

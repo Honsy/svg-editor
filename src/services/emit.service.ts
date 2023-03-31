@@ -1,6 +1,6 @@
 import { logger } from "@/utils/logger";
 import EventEmitter from "eventemitter3";
-import { ServiceSaveData, ServiceErrorData } from "./config/emit.config";
+import { ServiceSaveData, ServiceErrorData, ServiceHmiLoadedData } from "./config/emit.config";
 
 /**
  * @enum {ErrorDetails}
@@ -23,6 +23,7 @@ export enum ServiceEvents {
   // Fired before MediaSource is attaching to media element
   SERVICE_SAVE_CURRENT = 'serviceSaveCurrent',
   SERVICE_ERROR = "serviceError",
+  SERVICE_HMI_LOADED = "serviceHmiLoaded",
   HMI_SERVICE_VARIABLECHANGED = 'serviceHmiVariableChanged'
 }
 
@@ -30,6 +31,10 @@ export interface ServiceListeners {
   [ServiceEvents.SERVICE_SAVE_CURRENT]: (
     event: ServiceEvents.SERVICE_SAVE_CURRENT,
     data: ServiceSaveData
+  ) => void;
+  [ServiceEvents.SERVICE_HMI_LOADED]: (
+    event: ServiceEvents.SERVICE_HMI_LOADED,
+    data: ServiceHmiLoadedData
   ) => void;
   [ServiceEvents.SERVICE_ERROR]: (
     event: ServiceEvents.SERVICE_ERROR,

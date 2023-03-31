@@ -9,7 +9,6 @@ export interface ITopPanelProp {}
 const TopPanel: React.FC<ITopPanelProp> = ({ }) => {
   
   const onSave = () => {
-    console.log('dd11')
     service.projectService.saveProject()
   }
 

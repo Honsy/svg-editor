@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ebay/nice-modal-react": "^1.2.9",
     "@svgedit/svgcanvas": "^7.2.1",
     "antd": "^5.2.3",
     "axios": "^1.3.4",

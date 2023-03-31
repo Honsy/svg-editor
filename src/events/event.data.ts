@@ -47,7 +47,7 @@ export interface EditorSelectView {
 
 
 export interface EditorSelectElement {
-  eles: any[] 
+  elems: any[] 
 }
 
 

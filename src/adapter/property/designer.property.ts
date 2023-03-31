@@ -130,11 +130,11 @@ export default class DesignerProperty {
           })
         }
       }
-      this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {eles: params})
+      this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {elems: params})
     } else {
       if (this.selectedElement) {
         params.push({id: this.selectedElement.id, type: this.selectedElement.getAttribute('type')})
-        this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {eles: params})
+        this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, {elems: params})
       } else {
         this.designer.trigger(Events.EDITOR_SELECT_ELEMENT, null)
       }

@@ -1,13 +1,13 @@
 import './App.css'
 import { Routes, Route } from "react-router-dom";
-import VizDesigner from './pages/designer/VizDesigner';
-import VizPreview from './pages/preview/VizPreview';
+import DesignerPage from './pages/designer/DesignerPage';
+import PreviewPage from './pages/preview/PreviewPage';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<VizDesigner />}></Route>
-      <Route path="/preview" element={<VizPreview />}></Route>
+      <Route path="/" element={<DesignerPage />}></Route>
+      <Route path="/preview" element={<PreviewPage />}></Route>
     </Routes>)
 }
 

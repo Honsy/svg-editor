@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { designer } from '../../VizDesigner'
+import { designer } from '../../DesignerPage'
 
 export interface AddViewModel {
   name: string

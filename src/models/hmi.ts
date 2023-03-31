@@ -144,7 +144,10 @@ export class GaugeSettings {
 }
 
 export class GaugeProperty {
-    code: string; // 点位编码
+    iot: {
+        code: string; // 点位编码
+    }
+    name: string; // 元件名称
     variableId: string;
     variableValue: string;
     bitmask: number;

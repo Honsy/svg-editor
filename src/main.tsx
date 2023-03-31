@@ -7,6 +7,7 @@ import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import { DesignerContext, designer } from "./context/designer.context";
 import jQueryPluginSpinButton from './plugins/jquery/jQuery.SpinButton'
+import NiceModal from '@ebay/nice-modal-react';
 
 // SpinButton插件
 jQueryPluginSpinButton($);
@@ -21,7 +22,9 @@ jQueryPluginSpinButton($);
   root.render(
     <BrowserRouter>
       <ConfigProvider theme={theme}>
+        <NiceModal.Provider>
           <App />
+        </NiceModal.Provider>
       </ConfigProvider>
     </BrowserRouter>
   )

@@ -5,19 +5,31 @@ import { GaugeBaseComponent } from '@/gauge/gaugeBase'
 import { SelElement } from '@/models/hmi'
 import { Collapse } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import { designer } from '../../VizDesigner'
+import { designer } from '../../DesignerPage'
 import './rightpanel.scss'
+import PropertyModal from "./modal/PropertyModal";
+import { useModal } from '@ebay/nice-modal-react'
 
-export interface IRightPanelProp {}
+interface IRightPanelProp {}
 
 const RightPanel: React.FC<IRightPanelProp> = ({}) => {
   let gaugepanel
+  const userModal = useModal(PropertyModal);
   const [shadow, setShadow] = useState(0)
   const [selectedElement, setSelectedElement] = useState(new SelElement())
 
   const onSelectElementChange = (event, data: EditorSelectElement) => {
-    console.log('11232132', data)
     // setSelectedElement(data.eles)
+    setSelectedElement(null);
+    if (data.elems) {
+      if (data.elems.length <= 1) {
+        const element = data.elems[0];
+        element.type = element.type || 'svg-ext-shapes-' + (designer.currentMode || 'default');
+        // this.checkColors(element)
+        // this.checkGaugeInView(element);
+        setSelectedElement(element);
+      }
+    }
   }
   const onAlignSelected = (letter: string) => {
     designer.editor.alignSelectedElements(letter.charAt(0))
@@ -25,7 +37,11 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
 
   const getGaugeSettings = () => {}
 
-  const onGaugeEdit = () => {}
+  const onGaugeEdit = () => {
+    userModal.show().then(res=>{
+
+    })
+  }
 
   // 初始化通用属性监听
   useEffect(() => {
