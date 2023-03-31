@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import IotTree from "./IotTree"
 
 interface IotSelectPointProps {
@@ -18,11 +18,18 @@ const IotSelectPoint: React.FC<IotSelectPointProps> = (props) => {
       categoryId: info.node.id
     })
   }
+  const getData = () => {
+    
+  }
+
+  useEffect(() => {
+    getData();
+  }, [queryCondition])
 
   return (
     <div className="iot-select-point">
     <div className="iot-select-point-tree">
-      <IotTree onTreeNodeClick={(selectedKeys, info) => onTreeNodeClick(selectedKeys, info)()}></IotTree>
+      <IotTree onTreeNodeClick={(selectedKeys, info) => onTreeNodeClick(selectedKeys, info)}></IotTree>
       </div>
       </div>
   )

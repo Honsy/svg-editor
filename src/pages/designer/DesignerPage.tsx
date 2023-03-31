@@ -9,7 +9,7 @@ import { service } from "@/services/service";
 
 export const designer = new Designer();
 
-const VizDesigner: React.FC<any> = ({}) => {
+const DesignePage: React.FC<any> = ({}) => {
   const [currentMode, setCurrentMode] = useState('')
   useEffect(() => {
     service.themeService.setTheme(service.projectService.getLayoutTheme());
@@ -28,4 +28,4 @@ const VizDesigner: React.FC<any> = ({}) => {
   )
 }
 
-export default React.memo(VizDesigner)
+export default React.memo(DesignePage)

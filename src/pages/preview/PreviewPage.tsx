@@ -3,7 +3,7 @@ import { service } from "@/services/service";
 import React, { useEffect, useState } from "react"
 import SvgView from "./components/SvgView";
 
-const Preview: React.FC<any> = ({}) => {
+const PreviewPage: React.FC<any> = ({}) => {
   let hmi, gaugesManager = service.gaugesManager;
   const [labView, setLabView] = useState(null);
   const [currentView, setCurrentView] = useState(null);
@@ -42,4 +42,4 @@ const Preview: React.FC<any> = ({}) => {
   )
 }
 
-export default React.memo(Preview)
+export default React.memo(PreviewPage)
