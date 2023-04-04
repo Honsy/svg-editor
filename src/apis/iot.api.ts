@@ -1,4 +1,4 @@
-import { service } from "@/utils";
+import { service } from "@/utils/request";
 import qs from "qs";
 
 export function getPointTree(params) {

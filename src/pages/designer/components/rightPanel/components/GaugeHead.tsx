@@ -1,6 +1,8 @@
-import { GaugeProperty } from "@/models/hmi";
-import { Button, Col, Input, Row, Typography } from "antd";
-import React, { useState } from "react";
+import { GaugeProperty } from '@/models/hmi'
+import { Button, Col, Input, Row, Space, Typography } from 'antd'
+import React, { useState } from 'react'
+import { useModal } from '@ebay/nice-modal-react'
+import IotSelectPointModal from "@/components/IotSelectPoint/IotSelectPointModal";
 
 const { Text } = Typography
 
@@ -9,29 +11,30 @@ interface IGaugeHeadProp {
 }
 
 const GaugeHeadComponent: React.FC<IGaugeHeadProp> = (props) => {
-  const initProperty = props.property ? props.property : new GaugeProperty();
+  const initProperty = props.property ? props.property : new GaugeProperty()
+  const iotSelectPointModal = useModal(IotSelectPointModal);
 
-  const [property, setProperty] = useState(initProperty);
+  const [property, setProperty] = useState(initProperty)
 
-  const updateSetting = (e, key) => {
-
+  const updateSetting = (e, key) => {}
+  const handleSelectPoint = () => {
+    console.log('ddd')
+    iotSelectPointModal.show()
   }
-
   return (
     <div>
-      <Row gutter={24}>
-        <Col className="gutter-row" span={6}>
+      <Space direction="vertical">
+        <Space direction="horizontal">
+          <Text>名称：</Text>
           <Input className="viz-input" value={property.name} onChange={(e) => updateSetting(e, 'name')}></Input>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col>
-          <Text>物联网点位：{property.iot.code}</Text>
-          <Button>选取点位</Button>
-        </Col>
-      </Row>
+        </Space>
+        <Space direction="horizontal">
+          <Text>物联网点位：{property.iot?.code}</Text>
+          <Button onClick={handleSelectPoint}>选取点位</Button>
+        </Space>
+      </Space>
     </div>
   )
 }
 
-export default React.memo(GaugeHeadComponent);
+export default React.memo(GaugeHeadComponent)
