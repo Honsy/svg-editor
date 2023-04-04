@@ -14,6 +14,7 @@ import { PipeComponent } from "./controls/pipe/pipe";
 import { ShapesComponent } from "./controls/shapes/shapes";
 import { SliderComponent } from "./controls/slider/slider";
 import { ValueComponent } from "./controls/value/value";
+import { GaugeDialogType } from "./gauge-property/gaugeProperty";
 import { IotSliderComponent } from "./gui-helpers/IotSlider/IotSlider";
 
 export class GaugesManager {
@@ -127,5 +128,17 @@ export class GaugesManager {
       }
     }
     return gs
+  }
+
+  static getEditDialogTypeToUse(type: string): GaugeDialogType {
+    for (let i = 0; i < GaugesManager.Gauges.length; i++) {
+        if (type.startsWith(GaugesManager.Gauges[i].TypeTag)) {
+            if (typeof GaugesManager.Gauges[i]['getDialogType'] === 'function') {
+                return GaugesManager.Gauges[i]['getDialogType']();
+            } else {
+                return null;
+            }
+        }
+    }
   }
 }

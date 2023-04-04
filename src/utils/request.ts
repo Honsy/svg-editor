@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const service = axios.create({
+export const request = axios.create({
   baseURL: "",
 });
 
-service.interceptors.request.use(
+request.interceptors.request.use(
   (config) => {
     return config;
   },
@@ -13,7 +13,7 @@ service.interceptors.request.use(
   }
 );
 
-service.interceptors.response.use(
+request.interceptors.response.use(
   (response) => {
     const res = response;
     if (res.status === 200) {

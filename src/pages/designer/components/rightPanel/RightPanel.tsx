@@ -8,13 +8,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { designer } from '../../DesignerPage'
 import './rightpanel.scss'
 import PropertyModal from "./modal/PropertyModal";
-import { useModal } from '@ebay/nice-modal-react'
+import NiceModal, { useModal } from '@ebay/nice-modal-react'
+import { service } from '@/services/service'
+import { GaugesManager } from '@/gauge/gaugeManager'
 
 interface IRightPanelProp {}
 
 const RightPanel: React.FC<IRightPanelProp> = ({}) => {
   let gaugepanel
-  const userModal = useModal(PropertyModal);
   const [shadow, setShadow] = useState(0)
   const [selectedElement, setSelectedElement] = useState(new SelElement())
 
@@ -37,10 +38,11 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
 
   const getGaugeSettings = () => {}
 
-  const onGaugeEdit = () => {
-    userModal.show().then(res=>{
-
-    })
+  const onGaugeEdit = (settings) => {
+    let hmi = service.projectService.getHmi();
+    let dlgType = GaugesManager.getEditDialogTypeToUse(settings.type);
+    let data = {a: 1}
+    NiceModal.show(PropertyModal, {data});
   }
 
   // 初始化通用属性监听

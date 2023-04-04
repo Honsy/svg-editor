@@ -1,20 +1,24 @@
 import { Tabs } from "antd"
-import React from "react"
+import React, { useState } from "react"
 import type { TabsProps } from 'antd';
 import GaugeHead from "./GaugeHead";
 import GaugeAction from "./GaugeAction";
 import GaugeEvent from "./GaugeEvent";
+import { GaugeProperty } from "@/models/hmi";
 
 
-interface IGaugePropertyProp {}
+interface IGaugePropertyProp {
+  data: any
+}
 
 const GaugePropertyComponent: React.FC<IGaugePropertyProp> = ({}) => {
+  const [property, setProperty] = useState({} as GaugeProperty)
 
   const items: TabsProps['items'] = [
     {
       key: '1',
       label: `属性`,
-      children: <GaugeHead></GaugeHead>,
+      children: <GaugeHead property={property}></GaugeHead>,
     },
     {
       key: '2',
@@ -24,7 +28,7 @@ const GaugePropertyComponent: React.FC<IGaugePropertyProp> = ({}) => {
     {
       key: '3',
       label: `动作`,
-      children: <GaugeEvent></GaugeEvent>,
+      children: <GaugeEvent property={property}></GaugeEvent>,
     },
   ];
   return (

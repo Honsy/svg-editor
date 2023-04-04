@@ -4,19 +4,12 @@ import { Modal } from "antd";
 import GaugeProperty from "../components/GaugeProperty";
 
 interface PropertyModalProps {
-  user?: any
+  data?: any
 }
 
-export default NiceModal.create(({ user }: PropertyModalProps) => {
+export default NiceModal.create(({ data }: PropertyModalProps) => {
   const modal = useModal();
 
-  const meta = {
-    initialValues: user,
-    fields: [
-      { key: 'name', label: 'Name', required: true },
-      { key: 'job', label: 'Job Title', required: true },
-    ],
-  };
   const handleSubmit = useCallback(() => {
 
   }, [])
@@ -28,7 +21,7 @@ export default NiceModal.create(({ user }: PropertyModalProps) => {
       cancelText="取消"
       onOk={handleSubmit}
     >
-      <GaugeProperty></GaugeProperty>
+      <GaugeProperty data={data}></GaugeProperty>
     </Modal>
   );
 })
