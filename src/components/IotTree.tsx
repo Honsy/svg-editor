@@ -14,12 +14,12 @@ const IotTree: React.FC<IotTreeProps> = (props) => {
   const [treeData, setTreeData] = useState([])
   
   const getData = () => {
-    // const params = {
-    //   type: "sensor"
-    // }
-    // getPointTree(params).then((res: any)=>{
-    //   setTreeData(res.result)
-    // })
+    const params = {
+      type: "sensor"
+    }
+    getPointTree(params).then((res: any)=>{
+      setTreeData(res.result)
+    })
   }
 
   useEffect(() => {
