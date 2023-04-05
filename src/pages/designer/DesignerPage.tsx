@@ -11,9 +11,8 @@ export const designer = new Designer();
 
 const DesignePage: React.FC<any> = ({}) => {
   const [currentMode, setCurrentMode] = useState('')
-  useEffect(() => {
-    service.themeService.setTheme(service.projectService.getLayoutTheme());
-  }, [])
+  service.themeService.setTheme(service.projectService.getLayoutTheme());
+ 
   return (
     <div className="iv-designer">
       <TopPanel></TopPanel>

@@ -1,0 +1,19 @@
+.iv-designer-header {
+    display: flex;
+    align-items: center;
+    .header-left {
+        flex: 0 0 260px;
+        width: 260px;
+        
+    }
+    .header-center {
+        border-left: 1px solid var(--headerBorder);
+        border-right: 1px solid var(--headerBorder);
+        flex: auto;
+        text-align: center;
+    }
+    .header-right {
+        flex: 0 0 260px;
+        width: 260px;
+    }
+}

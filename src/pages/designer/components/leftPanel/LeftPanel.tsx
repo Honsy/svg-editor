@@ -70,7 +70,7 @@ const LeftPanel: React.FC<ILeftPanelProp> = ({}) => {
         <div className="iv-views-header">
           <p>视图</p>
           <div>
-            <Button type="text" onClick={() => setAddViewVisible(true)}>
+            <Button type="link" onClick={() => setAddViewVisible(true)}>
               添加
             </Button>
           </div>
@@ -87,7 +87,7 @@ const LeftPanel: React.FC<ILeftPanelProp> = ({}) => {
             )
           })}
       </div>
-      <Collapse defaultActiveKey={['1', '2', '3']}>
+      <Collapse className="iv-components iot-collapse" defaultActiveKey={['1', '2', '3']}>
         <Panel header="通用组件" key="2">
           <div className="iv-panel-block">
             {generals.map((item) => {

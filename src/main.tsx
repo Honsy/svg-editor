@@ -8,9 +8,11 @@ import { ConfigProvider } from 'antd'
 import { DesignerContext, designer } from "./context/designer.context";
 import jQueryPluginSpinButton from './plugins/jquery/jQuery.SpinButton'
 import NiceModal from '@ebay/nice-modal-react';
+import { service } from './services/service'
 
 // SpinButton插件
 jQueryPluginSpinButton($);
+
 
 (function () {
   const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

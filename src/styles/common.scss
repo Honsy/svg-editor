@@ -1,0 +1,12 @@
+
+.iot-collapse {
+    &.ant-collapse {
+        background-color: var(--toolboxBackground);
+        .ant-collapse-item >.ant-collapse-header {
+            padding: 2px 4px;
+        }
+        .ant-collapse-content>.ant-collapse-content-box {
+            padding: 2px 4px;
+        }
+    }
+}

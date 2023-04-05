@@ -4,6 +4,10 @@
   height: 100%;
   .iv-designer-header {
     height: 50px;
+    border-bottom: 1px solid;
+    background-color: var(--headerBackground);
+    color: var(--headerColor);
+    border-color: var(--headerBorder);
   }
   .iv-designer-container {
     height: calc(100% - 50px);

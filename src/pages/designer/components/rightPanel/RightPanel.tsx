@@ -22,7 +22,7 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
   const onSelectElementChange = (event, data: EditorSelectElement) => {
     // setSelectedElement(data.eles)
     setSelectedElement(null);
-    if (data.elems) {
+    if (data && data.elems) {
       if (data.elems.length <= 1) {
         const element = data.elems[0];
         element.type = element.type || 'svg-ext-shapes-' + (designer.currentMode || 'default');
@@ -53,7 +53,7 @@ const RightPanel: React.FC<IRightPanelProp> = ({}) => {
 
   return (
     <div className="iv-rightpanel">
-      <Collapse className="iv-collapse" defaultActiveKey={['1', '2', '3', '4', '5']}>
+      <Collapse className="iv-collapse iot-collapse" defaultActiveKey={['1', '2', '3', '4', '5']}>
         <Collapse.Panel header="基础属性" key="1">
           <div className="iv-right-general iv-panel-block">
             {/* 坐标 */}

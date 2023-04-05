@@ -1,17 +1,31 @@
 .iv-leftpanel {
+  background: var(--sidenavBackgroung);
   .iv-panel-block {
-    background: #333;
+    background-color: var(--toolboxBackground);
   }
   .iv-leftpanel-views {
+    height: 260px;
     .iv-views-header {
+      background-color: var(--toolboxBackground);
+      border-bottom: 1px solid var(--toolboxBorder);
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      height: 40px;
+    }
+
+    .iv-view-item {
+      height: 30px;
+      line-height: 30px;
+      display: flex;
+      justify-content: space-between;
+      &.active {
+        background-color: #585858;
+      }
     }
   }
-  .iv-view-item {
-    &.active {
-      background-color: red;
-    }
+  .iv-components {
+    height: calc(100% - 260px);
   }
 }
 

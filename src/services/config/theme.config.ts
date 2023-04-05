@@ -2,7 +2,7 @@ export const THEMES = {
   default: {
       headerBackground: 'hsl(0, 0%, 100%)',
       headerColor: 'rgba(33,33,33,0.92)',
-      headerBorder: '#f9f9f9',
+      headerBorder: '#D3D3D3',
       toolboxBackground: '#FBFBFB',
       toolboxColor: '#000000',
       toolboxBorder: '#F1F3F4',
