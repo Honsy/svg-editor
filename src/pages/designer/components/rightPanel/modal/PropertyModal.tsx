@@ -18,6 +18,7 @@ export default NiceModal.create(({ data }: PropertyModalProps) => {
       {...antdModal(modal)}
       title="扩展属性"
       okText="确定"
+      width={860}
       cancelText="取消"
       onOk={handleSubmit}
     >

@@ -22,7 +22,7 @@ const GaugeEventComponent: React.FC<IGaugeHeadProp> = ({ property }) => {
 
   const addEvent = (ge: GaugeEvent) => {
     events.push(ge);
-    setEvents(events)
+    setEvents(events.slice())
   }
 
   useEffect(() => {

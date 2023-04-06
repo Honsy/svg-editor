@@ -8,7 +8,7 @@ import { ConfigProvider } from 'antd'
 import { DesignerContext, designer } from "./context/designer.context";
 import jQueryPluginSpinButton from './plugins/jquery/jQuery.SpinButton'
 import NiceModal from '@ebay/nice-modal-react';
-import { service } from './services/service'
+import 'antd/dist/reset.css';
 
 // SpinButton插件
 jQueryPluginSpinButton($);

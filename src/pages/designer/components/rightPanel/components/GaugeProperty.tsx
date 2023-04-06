@@ -23,12 +23,12 @@ const GaugePropertyComponent: React.FC<IGaugePropertyProp> = ({}) => {
     {
       key: '2',
       label: `事件`,
-      children: <GaugeAction></GaugeAction>,
+      children: <GaugeEvent property={property}></GaugeEvent>,
     },
     {
       key: '3',
       label: `动作`,
-      children: <GaugeEvent property={property}></GaugeEvent>,
+      children: <GaugeAction property={property}></GaugeAction>,
     },
   ];
   return (

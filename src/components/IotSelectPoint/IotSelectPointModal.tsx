@@ -2,6 +2,7 @@ import { useCallback, useState } from "react"
 import NiceModal, { useModal, antdModal } from '@ebay/nice-modal-react';
 import { Modal } from "antd";
 import IotSelectPoint from "./IotSelectPoint";
+import React from "react";
 
 interface IotSelectPointProps {
   user?: any
