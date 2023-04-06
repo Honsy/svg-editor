@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import React, { useCallback, useState } from "react"
 import NiceModal, { useModal, antdModal } from '@ebay/nice-modal-react';
 import { Modal } from "antd";
 import GaugeProperty from "../components/GaugeProperty";
