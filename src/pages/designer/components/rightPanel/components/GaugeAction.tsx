@@ -42,7 +42,7 @@ const GaugeActionComponent: React.FC<IGaugeHeadProp> = ({ property }) => {
     <div className="gauge-action">
       { actions.map(item => {
         return (
-          <Space key={item} wrap>
+          <Space className="flex w-full" key={item} wrap>
             <div>
               <span>取值范围：</span>
               <IotRangeNumber></IotRangeNumber>
