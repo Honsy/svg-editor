@@ -9,6 +9,7 @@ import { DesignerContext, designer } from "./context/designer.context";
 import jQueryPluginSpinButton from './plugins/jquery/jQuery.SpinButton'
 import NiceModal from '@ebay/nice-modal-react';
 import 'antd/dist/reset.css';
+import DesignerPage from './pages/designer/DesignerPage'
 
 // SpinButton插件
 jQueryPluginSpinButton($);
@@ -21,14 +22,16 @@ jQueryPluginSpinButton($);
       borderRadius: 0
     }
   }
+  console.log('render')
   root.render(
-    <BrowserRouter>
-      <ConfigProvider theme={theme}>
-        <NiceModal.Provider>
-          <App />
-        </NiceModal.Provider>
-      </ConfigProvider>
-    </BrowserRouter>
+    <ConfigProvider theme={theme}>
+      <NiceModal.Provider>
+        <BrowserRouter>
+          {/* github publish */}
+          <DesignerPage />
+        </BrowserRouter>
+      </NiceModal.Provider>
+    </ConfigProvider>
   )
   
 })()
