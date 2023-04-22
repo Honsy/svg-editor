@@ -98,7 +98,7 @@ class Rulers {
       const elements = Array.prototype.filter.call($hcanv.parentNode.children, function (child) {
         return child !== $hcanv
       })
-      Array.from(elements).forEach(function (element) {
+      Array.from(elements).forEach(function (element: any) {
         element.remove()
       })
 

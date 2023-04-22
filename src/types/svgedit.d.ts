@@ -1,12 +1,12 @@
 
 
-declare module "@svgedit/svgcanvas/core/path" {
-  export const path;
-}
+// declare module "@svgedit/svgcanvas/core/path" {
+//   export const path;
+// }
 
-declare module "@svgedit/svgcanvas/core/math" {
-  export function transformPoint(x, y, m): any;
-}
+// declare module "@svgedit/svgcanvas/core/math" {
+//   export function transformPoint(x, y, m): any;
+// }
 
 
 // declare module "@svgedit/svgcanvas/core/utilities" {

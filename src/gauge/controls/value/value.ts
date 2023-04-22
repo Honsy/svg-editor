@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom/client'
 import { GaugeBaseComponent } from "../../gaugeBase";
 import { GaugeDialogType } from "../../gauge-property/gaugeProperty";
 import { IotValue } from "../../gui-helpers/IotValue/IotValue";
-
 declare var SVG: any;
 
 export class ValueComponent extends GaugeBaseComponent {
