@@ -27,6 +27,7 @@ jQueryPluginSpinButton($);
     <ConfigProvider theme={theme}>
       <NiceModal.Provider>
         <BrowserRouter>
+          {/* github publish */}
           <DesignerPage />
         </BrowserRouter>
       </NiceModal.Provider>
