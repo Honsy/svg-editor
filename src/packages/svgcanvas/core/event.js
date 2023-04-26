@@ -150,6 +150,10 @@ const mouseMoveEvent = (evt) => {
       // this transform is removed upon mousing up and the element is
       // relocated to the new location
       if (selected) {
+        const type = selected.getAttribute('type')
+        if (type === 'iotPolyLine') {
+          break;
+        }
         dx = x - svgCanvas.getStartX()
         dy = y - svgCanvas.getStartY()
         if (svgCanvas.getCurConfig().gridSnapping) {
@@ -595,12 +599,11 @@ const mouseUpEvent = (evt) => {
 
   const realX = x
   const realY = y
-
+  console.warn('mouseUpEvent')
   // TODO: Make true when in multi-unit mode
   const useUnit = false // (svgCanvas.getCurConfig().baseUnit !== 'px');
   svgCanvas.setStarted(false)
   let t
-  console.warn('mouseUpEvent', svgCanvas.getCurrentMode())
   switch (svgCanvas.getCurrentMode()) {
     // intentionally fall-through to select here
     case 'resize':
@@ -617,6 +620,7 @@ const mouseUpEvent = (evt) => {
         if (!selectedElements[1]) {
           // set our current stroke/fill properties to the element's
           const selected = selectedElements[0]
+          const type = selected.getAttribute("type");
           switch (selected.tagName) {
             case 'g':
             case 'use':
@@ -628,7 +632,6 @@ const mouseUpEvent = (evt) => {
               svgCanvas.setCurText('font_family', selected.getAttribute('font-family'))
             // fallthrough
             default:
-              const type = selected.getAttribute("type");
               if (type !== "svg-ext-pipe") {
                 svgCanvas.setCurProperties('fill', selected.getAttribute('fill'));
                 svgCanvas.setCurProperties('fill_opacity', selected.getAttribute('fill-opacity'));
@@ -640,7 +643,17 @@ const mouseUpEvent = (evt) => {
                 svgCanvas.setCurProperties('stroke_linecap', selected.getAttribute('stroke-linecap'))
               }
           }
-          svgCanvas.selectorManager.requestSelector(selected).showGrips(true)
+          if (type !== "iotPolyLine") {
+            svgCanvas.selectorManager.requestSelector(selected).showGrips(true)
+          } else {
+            svgCanvas.runExtensions('mouseUp', {
+              event: evt,
+              mouse_x: mouseX,
+              mouse_y: mouseY,
+              selected: selected
+            }, true)
+            return;
+          }
         }
         // always recalculate dimensions to strip off stray identity transforms
         svgCanvas.recalculateAllSelectedDimensions()
@@ -786,7 +799,6 @@ const mouseUpEvent = (evt) => {
       svgCanvas.setStarted(true)
 
       const res = svgCanvas.pathActions.mouseUp(evt, element, mouseX, mouseY);
-      console.log('mouseUppathpathpath', res);
 
       ({ element } = res);
       ({ keep } = res)
@@ -817,7 +829,6 @@ const mouseUpEvent = (evt) => {
       // This could occur in an extension
       break
   }
-  console.warn('mouseUpsetTimeout111', element, keep)
 
   /**
 * The main (left) mouse button is released (anywhere).
@@ -840,8 +851,6 @@ const mouseUpEvent = (evt) => {
       svgCanvas.setStarted(r.started || svgCanvas.getStarted())
     }
   })
-
-  console.warn('mouseUpsetTimeout', element,element.getAttribute('type'), keep)
 
   if (!keep && element) {
 
@@ -970,7 +979,6 @@ const dblClickEvent = (evt) => {
  * @returns {void}
  */
 const mouseDownEvent = (evt) => {
-  console.log('mouseDownEvent')
   const dataStorage = svgCanvas.getDataStorage()
   const selectedElements = svgCanvas.getSelectedElements()
   const zoom = svgCanvas.getZoom()

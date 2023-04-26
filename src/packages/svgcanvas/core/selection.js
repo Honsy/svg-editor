@@ -116,9 +116,13 @@ const addToSelectionMethod = (elemsToAdd, showGrips) => {
   svgCanvas.call('selected', selectedElements)
 
   if (selectedElements.length === 1) {
-    svgCanvas.selectorManager
+    // HSY 
+    if (selectedElements[0].getAttribute('type') !== 'iotPolyLine') {
+      svgCanvas.selectorManager
       .requestSelector(selectedElements[0])
-      .showGrips(showGrips)
+      .showGrips(showGrips)    
+    }
+
   }
 
   // make sure the elements are in the correct order

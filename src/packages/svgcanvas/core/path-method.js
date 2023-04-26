@@ -139,12 +139,13 @@ export const addPointGripMethod = function (index, x, y) {
     pointGripContainer.append(pointGrip)
 
     const grip = document.getElementById('pathpointgrip_' + index)
-    grip?.addEventListener('dblclick', () => {
-      const path = svgCanvas.getPathObj()
-      if (path) {
-        path.setSegType()
-      }
-    })
+    // HSY 暂时关闭dblclick事件 禁止弧形线段
+    // grip?.addEventListener('dblclick', () => {
+    //   const path = svgCanvas.getPathObj()
+    //   if (path) {
+    //     path.setSegType()
+    //   }
+    // })
   }
   if (x && y) {
     // set up the point grip element and display it
@@ -456,7 +457,7 @@ export class Segment {
           item.x1, item.y1, item.x2 += dx, item.y2 += dy
         ]
       : [item.x += dx, item.y += dy]
-
+      
     replacePathSegMethod(
       this.type,
       this.index,

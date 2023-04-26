@@ -90,6 +90,7 @@ export class Selector {
   * @returns {void}
   */
   showGrips (show) {
+    console.warn('showGrips')
     const bShow = show ? 'inline' : 'none'
     selectorManager_.selectorGripsGroup.setAttribute('display', bShow)
     const elem = this.selectedElement
@@ -428,6 +429,10 @@ export class SelectorManager {
   */
   requestSelector (elem, bbox) {
     if (!elem) { return null }
+    // HSY 
+    // if (elem.getAttribute('type') === 'iotPolyLine') {
+    //   return null
+    // }
 
     const N = this.selectors.length
     // If we've already acquired one for this element, return it.

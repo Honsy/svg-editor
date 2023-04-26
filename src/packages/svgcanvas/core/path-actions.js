@@ -330,7 +330,6 @@ export const pathActionsMethod = (function () {
     * @returns {boolean|void}
     */
     mouseDown (evt, mouseTarget, startX, startY) {
-      console.log(svgCanvas.getCurrentMode() === 'pipe')
       let id
       if (svgCanvas.getCurrentMode() === 'path' || svgCanvas.getCurrentMode() === 'pipe') {
         let mouseX = startX // Was this meant to work with the other `mouseX`? (was defined globally so adding `let` to at least avoid a global)
@@ -677,7 +676,8 @@ export const pathActionsMethod = (function () {
         path.dragging = [mouseX, mouseY]
 
         if (path.dragctrl) {
-          path.moveCtrl(diffX, diffY)
+          // HSY 禁止曲线滚动
+          // path.moveCtrl(diffX, diffY)
         } else {
           path.movePts(diffX, diffY)
         }
@@ -735,7 +735,6 @@ export const pathActionsMethod = (function () {
           svgCanvas.setStarted(false)
           firstCtrl = null
         }
-        console.warn('pathAction element', element, 'drawnPath',drawnPath, svgCanvas.getId(), getElement(svgCanvas.getId()))
         return {
           keep: true,
           element
